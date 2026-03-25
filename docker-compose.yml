@@ -2,8 +2,6 @@ services:
   ewm-db:
     image: postgres:16.1
     container_name: postgres-ewm-main-db
-    networks:
-      - ewm-net
     environment:
       POSTGRES_DB: db-commerce-shopping-cart
       POSTGRES_USER: postgres
