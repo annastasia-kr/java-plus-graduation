@@ -8,7 +8,4 @@ spring:
           predicates:
             - Path=/main-service/**
 
-server:
-  port: 8080
-
 
