@@ -20,7 +20,8 @@ spring:
         show-sql: false
         format_sql: true
 
-
+server:
+  port: 0
 
 logging:
   level:
