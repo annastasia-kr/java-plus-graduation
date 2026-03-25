@@ -9,13 +9,13 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>ru.yandex.practicum</groupId>
+    <groupId>ru.practicum</groupId>
     <artifactId>core</artifactId>
+    <packaging>pom</packaging>
 
-    <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <modules>
+        <module>main-service</module>
+    </modules>
+
 
 </project>
