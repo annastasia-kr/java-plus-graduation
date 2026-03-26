@@ -28,3 +28,15 @@ services:
       timeout: 5s
       interval: 10s
       retries: 15
+
+  stats-server:
+    container_name: stats-server
+    ports:
+        - "9090:9090"
+    build: ./stats/stats-server
+    depends_on:
+      - stats-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:6543/stats-db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=12345
