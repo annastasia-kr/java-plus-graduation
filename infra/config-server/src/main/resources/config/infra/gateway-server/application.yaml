@@ -22,7 +22,7 @@ spring:
           uri: lb://main-service
           predicates:
             - Path=/compilations/**
-            -
+
         - id: public_event
           uri: lb://main-service
           predicates:
