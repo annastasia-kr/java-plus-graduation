@@ -51,6 +51,7 @@ public class StatsClientImpl implements StatsClient {
     @Override
     public void saveHit(HttpServletRequest request) {
         try {
+            log.warn("Save hit app {} uri {} ip {} timestamp {}", app, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now().format(FORMATTER));
             Map<String, Object> hitData = new HashMap<>();
             hitData.put("app", app);
             hitData.put("uri", request.getRequestURI());
@@ -77,6 +78,8 @@ public class StatsClientImpl implements StatsClient {
     @Override
     public List<StatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         try {
+            log.warn("getStats start {} end {} uris {}", start, end, uris);
+
             UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(baseUrl + "/stats")
                     .queryParam("start", start.format(FORMATTER))
                     .queryParam("end", end.format(FORMATTER));
