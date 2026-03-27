@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import ru.practicum.events.enums.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.StatsClient;
+import ru.practicum.client.impl.StatsClient;
 import ru.practicum.StatsDto;
 import ru.practicum.categories.model.Category;
 import ru.practicum.categories.repository.CategoryRepository;
@@ -513,7 +513,7 @@ public class EventServiceImpl implements EventService {
     }
 
     private Long getEventViews(LocalDateTime createdOn, Long eventId) {
-        log.warn("getEventViews {} {}, ", createdOn, eventId);
+        log.warn("Method getEventViews {} {}, ", createdOn, eventId);
         List<StatsDto> stat = statsClient.getStats(createdOn, LocalDateTime.now(),
                 List.of(URI + eventId), true);
         if (stat.isEmpty()) {
