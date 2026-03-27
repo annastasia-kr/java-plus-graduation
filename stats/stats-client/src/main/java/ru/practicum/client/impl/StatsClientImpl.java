@@ -31,12 +31,11 @@ public class StatsClientImpl implements StatsClient {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final long backOffPeriod = 10000L;
     private static final int maxAttempts = 5;
+
     private final RestClient restClient;
     private final String app;
     private final DiscoveryClient discoveryClient;
     private final String serviceId;
-    private final int connectTimeoutMillis;
-    private final int readTimeoutMillis;
     private final RetryTemplate retryTemplate;
 
     public StatsClientImpl(
@@ -48,8 +47,6 @@ public class StatsClientImpl implements StatsClient {
         this.restClient = RestClient.builder().build();
         this.app = app;
         this.discoveryClient = discoveryClient;
-        this.connectTimeoutMillis = connectTimeoutMillis;
-        this.readTimeoutMillis = readTimeoutMillis;
 
         this.retryTemplate = createRetryTemplate();
         this.serviceId = serviceId;
@@ -73,7 +70,6 @@ public class StatsClientImpl implements StatsClient {
     public void saveHit(HttpServletRequest request) {
 
         try {
-            log.warn("Save hit app {} uri {} ip {} timestamp {}", app, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now().format(FORMATTER));
             Map<String, Object> hitData = new HashMap<>();
             hitData.put("app", app);
             hitData.put("uri", request.getRequestURI());
@@ -100,8 +96,6 @@ public class StatsClientImpl implements StatsClient {
     @Override
     public List<StatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         try {
-            log.warn("getStats start {} end {} uris {}", start, end, uris);
-
             UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(makeURI() + "/stats")
                     .queryParam("start", start.format(FORMATTER))
                     .queryParam("end", end.format(FORMATTER));
@@ -148,7 +142,7 @@ public class StatsClientImpl implements StatsClient {
             }
             return instances.getFirst();
         } catch (Exception e) {
-            throw new StatsServerUnavailable("Error! Statistics service is unavailable!");
+            throw new StatsServerUnavailable("Statistics service discovery failed!");
         }
     }
 }
