@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional(readOnly = true)
 public class RequestServiceImpl implements RequestService {
 
     private final RequestRepository requestRepository;
@@ -33,7 +34,6 @@ public class RequestServiceImpl implements RequestService {
     private final RequestMapper requestMapper;
 
     @Override
-    @Transactional(readOnly = true)
     public List<RequestDto> getUserRequests(Long userId) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с id=" + userId + " не найден"));

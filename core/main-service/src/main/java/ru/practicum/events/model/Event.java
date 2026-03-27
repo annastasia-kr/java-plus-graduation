@@ -61,16 +61,4 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private StateEvent state;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Event event = (Event) o;
-        return Objects.equals(id, event.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

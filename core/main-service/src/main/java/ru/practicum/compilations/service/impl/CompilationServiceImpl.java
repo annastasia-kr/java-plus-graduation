@@ -54,7 +54,6 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    @Transactional
     public CompilationDto findById(Long compId) {
         Compilation compilation = repository.findById(compId)
                 .orElseThrow(() -> {
