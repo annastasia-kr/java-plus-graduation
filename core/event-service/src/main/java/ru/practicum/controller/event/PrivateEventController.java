@@ -52,7 +52,7 @@ public class PrivateEventController {
     @ResponseStatus(HttpStatus.OK)
     public EventDto updateEventByUser(@PathVariable Long userId,
                                       @PathVariable Long eventId,
-                                      @RequestBody @NotNull @Valid UpdateEventDtoUserRequest updateEventDtoUserRequest) {
+                                      @RequestBody @Valid UpdateEventDtoUserRequest updateEventDtoUserRequest) {
         return eventService.updateEventByUser(userId, eventId, updateEventDtoUserRequest);
     }
 

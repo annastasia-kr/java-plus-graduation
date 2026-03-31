@@ -182,59 +182,6 @@ public class EventServiceImpl implements EventService {
         }
 
         return requestClient.updateRequestStatus(userId, eventId, eventRequestStatusUpdateDto);
-//        List<Request> requestsToStatusUpdate = requestRepository
-//                .findAllByIdIn(eventRequestStatusUpdateDto.getRequestIds());
-//        if (requestsToStatusUpdate.stream()
-//                .anyMatch(request -> !request.getStatus().equals(RequestStatus.PENDING))) {
-//            throw new DataConflictException("Applications must be in status \"PENDING\"");
-//        }
-//
-//        List<Request> confirmedRequests = new ArrayList<>();
-//        List<Request> rejectedRequests = new ArrayList<>();
-//        RequestStatus updateStatus = eventRequestStatusUpdateDto.getStatus();
-//
-//        // Проверяем, не превысит ли подтверждение лимит участников
-//        if (updateStatus == RequestStatus.CONFIRMED) {
-//            Long confirmedRequestsCount = requestClient.countByEventIdAndStatus(eventId, RequestStatus.CONFIRMED);
-//            if (confirmedRequestsCount + requestsToStatusUpdate.size() > event.getParticipantLimit()) {
-//                throw new DataConflictException("Application limit exceeded - confirmation not allowed");
-//            }
-//        }
-//
-//        if (updateStatus == RequestStatus.REJECTED) {
-//            for (Request request : requestsToStatusUpdate) {
-//                request.setStatus(RequestStatus.REJECTED);
-//                rejectedRequests.add(request);
-//            }
-//        } else if (updateStatus == RequestStatus.CONFIRMED) {
-//            for (Request request : requestsToStatusUpdate) {
-//                request.setStatus(RequestStatus.CONFIRMED);
-//                confirmedRequests.add(request);
-//            }
-//
-//            // Если после подтверждения будет достигнут лимит, отклоняем все остальные
-//            // pending заявки
-//            Long confirmedRequestsCount = requestClient.countByEventIdAndStatus(eventId, RequestStatus.CONFIRMED);
-//            if (confirmedRequestsCount + requestsToStatusUpdate.size() >= event.getParticipantLimit()) {
-//                List<Request> pendingRequests = requestRepository.findAllByEventIdAndStatus(eventId,
-//                        RequestStatus.PENDING);
-//                for (Request pendingRequest : pendingRequests) {
-//                    pendingRequest.setStatus(RequestStatus.REJECTED);
-//                    rejectedRequests.add(pendingRequest);
-//                }
-//            }
-//        }
-//
-//        requestRepository.saveAll(confirmedRequests);
-//        requestRepository.saveAll(rejectedRequests);
-//
-//        return new EventRequestStatusUpdateResult(
-//                confirmedRequests.stream()
-//                        .map(requestMapper::toRequestDto)
-//                        .toList(),
-//                rejectedRequests.stream()
-//                        .map(requestMapper::toRequestDto)
-//                        .toList());
     }
 
     @Override
