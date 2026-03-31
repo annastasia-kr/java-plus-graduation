@@ -68,7 +68,7 @@ public class EventServiceImpl implements EventService {
                 () -> new NotFoundException("User not found"));
 
         Pageable page = PageRequest.of(from / size, size);
-        return eventRepository.findAllByInitiatorId(userId, page).stream()
+        return eventRepository.findAllByInitiator(userId, page).stream()
                 .map(eventMapper::toEventShortDto)
                 .toList();
     }

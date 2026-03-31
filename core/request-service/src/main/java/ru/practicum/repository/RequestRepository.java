@@ -24,13 +24,13 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     boolean existsByEventIdAndRequesterId(Long eventId, Long requesterId);
 
     @Query("SELECT COUNT(r) FROM Request r " +
-            "WHERE r.event.id = :eventId AND r.status = ru.practicum.requests.enums.RequestStatus.CONFIRMED")
+            "WHERE r.event_id = :eventId AND r.status = ru.practicum.requests.enums.RequestStatus.CONFIRMED")
     Long countConfirmedRequests(@Param("eventId") Long eventId);
 
-    @Query("SELECT r.event.id AS eventId, COUNT(r) AS count FROM Request r " +
-            "WHERE r.event.id IN :eventIds " +
+    @Query("SELECT r.event_id AS eventId, COUNT(r) AS count FROM Request r " +
+            "WHERE r.event_id IN :eventIds " +
             "AND r.status = :status " +
-            "GROUP BY r.event.id")
+            "GROUP BY r.event_id")
     List<EventResult> countByEventIdsAndStatus(
             @Param("eventIds") List<Long> eventIds,
             @Param("status") RequestStatus status
