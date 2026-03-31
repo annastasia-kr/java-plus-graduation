@@ -25,7 +25,6 @@ CREATE TABLE IF NOT EXISTS events (
     location_id         BIGINT,
     state               VARCHAR(10) NOT NULL,
     FOREIGN KEY (category_id)  REFERENCES categories(id),
-    FOREIGN KEY (initiator_id) REFERENCES users(id),
     FOREIGN KEY (location_id)  REFERENCES locations(id)
 );
 CREATE TABLE IF NOT EXISTS compilations (
@@ -48,6 +47,5 @@ CREATE TABLE IF NOT EXISTS comments (
     created     TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     author_id   BIGINT NOT NULL,
     event_id    BIGINT NOT NULL,
-    FOREIGN KEY (author_id) REFERENCES users(id),
     FOREIGN KEY (event_id)  REFERENCES events(id)
 );

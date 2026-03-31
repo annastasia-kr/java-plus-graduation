@@ -3,7 +3,5 @@ CREATE TABLE IF NOT EXISTS requests (
     created         TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     event_id        BIGINT      NOT NULL,
     requester_id    BIGINT      NOT NULL,
-    status          VARCHAR(10) NOT NULL CHECK (status IN ('PENDING','REJECTED', 'CONFIRMED', 'CANCELED')),
-    FOREIGN KEY (event_id)      REFERENCES events (id) ON DELETE CASCADE,
-    FOREIGN KEY (requester_id)  REFERENCES users (id)  ON DELETE CASCADE
+    status          VARCHAR(10) NOT NULL CHECK (status IN ('PENDING','REJECTED', 'CONFIRMED', 'CANCELED'))
 );
