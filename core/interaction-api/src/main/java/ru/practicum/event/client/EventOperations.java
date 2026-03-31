@@ -7,7 +7,7 @@ import ru.practicum.event.dto.EventDto;
 
 import java.util.Optional;
 
-@FeignClient(name = "event-client", path = "/api/v1/events")
+@FeignClient(name = "event-service", path = "/api/v1/events")
 public interface EventOperations {
 
     @GetMapping("/{id}")
