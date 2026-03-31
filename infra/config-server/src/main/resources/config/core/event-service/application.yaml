@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: event-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:6542/events-db
+    username: postgres
+    password: 12345
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        show-sql: false
+        format_sql: true
+services:
+  stats-server-id: stats-server
+client:
+  stats:
+    connect-timeout: 5000
+    read-timeout: 10000
+
+server:
+  port: 0
+
+logging:
+  level:
+    org.springframework.orm.jpa: INFO
+    org.springframework.transaction: INFO
+    org.springframework.transaction.interceptor: TRACE
+    org.springframework.orm.jpa.JpaTransactionManager: DEBUG
+    org.hibernate.sql: DEBUG
+    org.hibernate.type: TRACE
+    org.hibernate.orm.jdbc.bind: TRACE
