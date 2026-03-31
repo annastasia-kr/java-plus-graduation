@@ -35,7 +35,4 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             @Param("eventIds") List<Long> eventIds,
             @Param("status") RequestStatus status
     );
-
-    long countByEventAndStatus(Long eventId, RequestStatus status);
-
 }
