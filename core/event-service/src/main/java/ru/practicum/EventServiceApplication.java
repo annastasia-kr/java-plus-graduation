@@ -9,7 +9,7 @@ import ru.practicum.request.client.RequestClient;
 import ru.practicum.user.client.UserClient;
 
 @SpringBootApplication
-@EnableFeignClients(clients = {StatsClient.class, UserClient.class, RequestClient.class})
+@EnableFeignClients(clients = {UserClient.class, RequestClient.class})
 @EnableDiscoveryClient
 public class EventServiceApplication {
     public static void main(String[] args) {
