@@ -57,7 +57,8 @@ public class RequestServiceImpl implements RequestService {
 
         UserDto user = findUserById(userId).orElseThrow(
                 () -> new NotFoundException("User (id = " + userId + " not found"));
-        EventDto event = eventClient.getEvent(eventId);
+        EventDto event = eventClient.getEvent(eventId).orElseThrow(() ->
+                new NotFoundException("Event (id = " + eventId + " not found"));
 
         validateRequestCreation(userId, event);
 
@@ -127,7 +128,8 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateDto eventRequestStatusUpdateDto) {
 
-        EventDto event = eventClient.getEvent(eventId);
+        EventDto event = eventClient.getEvent(eventId).orElseThrow(() ->
+                new NotFoundException("Event (id = " + eventId + " not found"));
 
         List<Request> requestsToStatusUpdate = requestRepository
                 .findAllByIdIn(eventRequestStatusUpdateDto.getRequestIds());
@@ -209,7 +211,4 @@ public class RequestServiceImpl implements RequestService {
         return userDtos.isEmpty() ? Optional.empty() : Optional.of(userDtos.getFirst());
     }
 
-    private EventDto findEventById(Long eventId) {
-        return eventClient.getEvent(eventId);
-    }
 }
