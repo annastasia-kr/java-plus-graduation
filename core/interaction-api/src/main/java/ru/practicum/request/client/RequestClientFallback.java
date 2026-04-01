@@ -17,7 +17,7 @@ public class RequestClientFallback implements RequestClient {
     @Override
     public long countByEventIdAndStatus(Long eventId, RequestStatus status) {
         log.error("Failed to get event count");
-        return 0;
+        return 0L;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class RequestClientFallback implements RequestClient {
 
     @Override
     public EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateDto eventRequestStatusUpdateDto) {
-        return null;
+        return new EventRequestStatusUpdateResult(List.of(), List.of());
     }
 
 

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.event.dto.EventResult;
+import ru.practicum.request.client.RequestClient;
 import ru.practicum.request.dto.EventRequestStatusUpdateDto;
 import ru.practicum.request.dto.EventRequestStatusUpdateResult;
 import ru.practicum.request.dto.RequestDto;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/requests")
 @RequiredArgsConstructor
 @Slf4j
-public class InternalRequestController {
+public class InternalRequestController implements RequestClient {
 
     private final RequestService requestService;
 
@@ -31,12 +32,12 @@ public class InternalRequestController {
     }
 
     @GetMapping("/count")
-    List<EventResult> countByEventIdsAndStatus(@RequestParam List<Long> eventIds, RequestStatus status) {
+    public List<EventResult> countByEventIdsAndStatus(@RequestParam List<Long> eventIds, RequestStatus status) {
         return requestService.countByEventIdsAndStatus(eventIds, status);
     }
 
     @PatchMapping("/user/{userId}/event/{eventId}")
-    EventRequestStatusUpdateResult updateRequestStatus(@PathVariable Long userId, @PathVariable Long eventId,
+    public EventRequestStatusUpdateResult updateRequestStatus(@PathVariable Long userId, @PathVariable Long eventId,
                                                        @RequestBody EventRequestStatusUpdateDto eventRequestStatusUpdateDto) {
         return requestService.updateRequestStatus(userId, eventId, eventRequestStatusUpdateDto);
     }

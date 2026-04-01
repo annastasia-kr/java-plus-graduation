@@ -13,19 +13,19 @@ import ru.practicum.request.enums.RequestStatus;
 
 import java.util.List;
 
-@FeignClient(name = "request-service", fallback = RequestClientFallback.class)
+@FeignClient(name = "request-service", path = "api/v1/requests", fallback = RequestClientFallback.class)
 public interface RequestClient {
 
-    @GetMapping("/api/v1/requests/{eventId}/count")
+    @GetMapping("/{eventId}/count")
     long countByEventIdAndStatus(@PathVariable Long eventId, RequestStatus status);
 
-    @GetMapping("/api/v1/requests/{eventId}")
+    @GetMapping("/{eventId}")
     List<RequestDto> getRequestsByEventId(@PathVariable Long eventId);
 
-    @GetMapping("/api/v1/requests/count")
+    @GetMapping("/count")
     List<EventResult> countByEventIdsAndStatus(@RequestParam List<Long> eventIds, RequestStatus status);
 
-    @PatchMapping("/api/v1/requests/user/{userId}/event/{eventId}")
+    @PatchMapping("/user/{userId}/event/{eventId}")
     EventRequestStatusUpdateResult updateRequestStatus(@PathVariable Long userId, @PathVariable Long eventId,
                                                        @RequestParam EventRequestStatusUpdateDto eventRequestStatusUpdateDto);
 }
