@@ -12,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class RequestClientFallback implements RequestOperations {
+public class RequestClientFallback implements RequestClient {
 
     @Override
     public long countByEventIdAndStatus(Long eventId, RequestStatus status) {

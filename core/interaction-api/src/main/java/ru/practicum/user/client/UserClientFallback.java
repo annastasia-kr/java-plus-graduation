@@ -8,7 +8,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class UserClientFallback implements UserOperations {
+public class UserClientFallback implements UserClient {
 
     @Override
     public List<UserDto> getUsers(List<Long> ids) {

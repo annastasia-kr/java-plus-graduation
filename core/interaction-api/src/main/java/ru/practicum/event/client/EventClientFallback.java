@@ -6,7 +6,7 @@ import ru.practicum.event.dto.EventDto;
 
 @Slf4j
 @Component
-public class EventClientFallback implements EventOperations {
+public class EventClientFallback implements EventClient {
 
     @Override
     public EventDto getEvent(Long id) {

@@ -1,11 +1,15 @@
 package ru.practicum.event.dto;
 
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UpdateCompilationRequest {
     private Boolean pinned;
 
