@@ -292,7 +292,7 @@ public class EventServiceImpl implements EventService {
         if (updateEventDtoAdminRequest.getRequestModeration() != null) {
             event.setRequestModeration(updateEventDtoAdminRequest.getRequestModeration());
         }
-        Long confirmedRequests = requestClient.countByEventIdAndStatus(event.getId(),
+        Long confirmedRequests = requestClient.countByEventIdAndStatus(eventId,
                 RequestStatus.CONFIRMED);
         return eventMapper.toEventDto(eventRepository.save(event), confirmedRequests, 0L);
     }
