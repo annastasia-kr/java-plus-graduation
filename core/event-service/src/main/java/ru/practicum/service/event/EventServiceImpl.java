@@ -1,5 +1,6 @@
 package ru.practicum.service.event;
 
+import feign.FeignException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -20,10 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.client.impl.StatsClient;
 import ru.practicum.StatsDto;
-import ru.practicum.exception.AccessDeniedForUserException;
-import ru.practicum.exception.DataConflictException;
-import ru.practicum.exception.NotFoundException;
-import ru.practicum.exception.ValidationException;
+import ru.practicum.exception.*;
 import ru.practicum.mapper.EventMapper;
 import ru.practicum.mapper.LocationMapper;
 import ru.practicum.model.Category;
@@ -40,6 +38,7 @@ import ru.practicum.enums.RequestStatus;
 import ru.practicum.client.UserClient;
 import ru.practicum.dto.UserDto;
 
+import java.lang.IllegalStateException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -292,9 +291,13 @@ public class EventServiceImpl implements EventService {
         if (updateEventDtoAdminRequest.getRequestModeration() != null) {
             event.setRequestModeration(updateEventDtoAdminRequest.getRequestModeration());
         }
-        Long confirmedRequests = requestClient.countByEventIdAndStatus(eventId,
-                RequestStatus.CONFIRMED);
-        return eventMapper.toEventDto(eventRepository.save(event), confirmedRequests, 0L);
+        try {
+            Long confirmedRequests = requestClient.countByEventIdAndStatus(eventId,
+                    RequestStatus.CONFIRMED);
+            return eventMapper.toEventDto(eventRepository.save(event), confirmedRequests, 0L);
+        } catch (FeignException e) {
+            throw new ConflictException("FException " + e.getMessage());
+        }
     }
 
     @Override
