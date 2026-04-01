@@ -4,13 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.practicum.dto.EventDto;
 
+import java.util.Optional;
+
 @Slf4j
 @Component
 public class EventClientFallback implements EventClient {
 
     @Override
-    public EventDto getEvent(Long id) {
-        return EventDto.builder().build();
+    public Optional<EventDto> getEvent(Long id) {
+        return Optional.empty();
     }
 
 }

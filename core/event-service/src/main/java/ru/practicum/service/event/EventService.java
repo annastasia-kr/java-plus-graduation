@@ -11,6 +11,7 @@ import ru.practicum.dto.RequestDto;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface EventService {
 
@@ -33,7 +34,7 @@ public interface EventService {
 
     EventDto getEvent(Long id, HttpServletRequest httpServletRequest);
 
-    EventDto getEvent(Long id);
+    Optional<EventDto> getEvent(Long id);
 
     Collection<EventDto> getEventsPublic(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart,
                                          LocalDateTime rangeEnd, Boolean onlyAvailable, Sort sort, Integer from,

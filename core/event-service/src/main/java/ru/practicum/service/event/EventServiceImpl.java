@@ -405,15 +405,11 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDto getEvent(Long id) {
-        Event event = eventRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Event not found"));
-        Long confirmedRequests = requestClient.countByEventIdAndStatus(event.getId(),
-                RequestStatus.CONFIRMED);
+    public Optional<EventDto> getEvent(Long id) {
+        return eventRepository.findById(id).map(e ->
+                eventMapper.toEventDto(e,
+                        Objects.nonNull(e.getConfirmedRequests()) ? e.getConfirmedRequests() : 0L, 0L));
 
-        LocalDateTime start = event.getPublishedOn() == null ? event.getCreatedOn() : event.getPublishedOn();
-        Long views = getEventViews(start, event.getId());
-        return eventMapper.toEventDto(event, confirmedRequests, views);
     }
 
     private Location getEventLocation(LocationDto locationDto) {
