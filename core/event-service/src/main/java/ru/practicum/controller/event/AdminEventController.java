@@ -3,6 +3,7 @@ package ru.practicum.controller.event;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +21,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RequestMapping(path = "/admin/events")
+@Slf4j
 public class AdminEventController {
 
     private final EventService eventService;
@@ -34,6 +36,7 @@ public class AdminEventController {
                                                  @RequestParam(defaultValue = "0") Integer from,
                                                  @RequestParam(defaultValue = "10") Integer size) {
 
+        log.trace("AdminEventController getEventsByAdmin");
         return eventService.getEventsByAdmin(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 
@@ -42,6 +45,7 @@ public class AdminEventController {
     public EventDto updateEvent(@PathVariable @Positive Long eventId,
                                 @Valid @RequestBody UpdateEventDtoAdminRequest updateEventDtoAdminRequest) {
 
+        log.trace("AdminEventController updateEvent {} {}", eventId, updateEventDtoAdminRequest);
         return eventService.updateEventByAdmin(eventId, updateEventDtoAdminRequest);
     }
 }
