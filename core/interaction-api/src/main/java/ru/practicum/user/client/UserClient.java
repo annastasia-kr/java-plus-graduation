@@ -7,7 +7,7 @@ import ru.practicum.user.dto.UserDto;
 
 import java.util.List;
 
-@FeignClient(name = "user-service", path = "api/v1/users", fallback = UserClientFallback.class)
+@FeignClient(name = "user-service", path = "/api/v1/users", fallback = UserClientFallback.class)
 public interface UserClient {
     @GetMapping
     List<UserDto> getUsers(
