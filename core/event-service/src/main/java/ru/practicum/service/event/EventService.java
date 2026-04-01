@@ -1,17 +1,16 @@
 package ru.practicum.service.event;
 
 import jakarta.servlet.http.HttpServletRequest;
-import ru.practicum.event.enums.Sort;
-import ru.practicum.event.enums.StateEvent;
-import ru.practicum.event.dto.*;
-import ru.practicum.request.dto.EventRequestStatusUpdateDto;
-import ru.practicum.request.dto.EventRequestStatusUpdateResult;
-import ru.practicum.request.dto.RequestDto;
+import ru.practicum.dto.*;
+import ru.practicum.enums.Sort;
+import ru.practicum.enums.StateEvent;
+import ru.practicum.dto.EventRequestStatusUpdateDto;
+import ru.practicum.dto.EventRequestStatusUpdateResult;
+import ru.practicum.dto.RequestDto;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 public interface EventService {
 

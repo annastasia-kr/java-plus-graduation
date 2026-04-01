@@ -4,14 +4,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValueMappingStrategy;
-import ru.practicum.event.dto.EventDto;
-import ru.practicum.event.dto.EventShortDto;
-import ru.practicum.event.dto.NewEventDto;
-import ru.practicum.event.enums.StateEvent;
+import ru.practicum.dto.EventDto;
+import ru.practicum.dto.EventShortDto;
+import ru.practicum.dto.NewEventDto;
+import ru.practicum.enums.StateEvent;
 import ru.practicum.model.Category;
 import ru.practicum.model.Event;
 import ru.practicum.model.Location;
-import ru.practicum.user.dto.UserDto;
+import ru.practicum.dto.UserDto;
 
 import java.time.LocalDateTime;
 

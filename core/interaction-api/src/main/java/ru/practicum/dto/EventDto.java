@@ -1,36 +1,31 @@
-package ru.practicum.model;
+package ru.practicum.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.practicum.enums.StateEvent;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "events")
-public class Event {
+@Builder
+public class EventDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String annotation;
 
     private String title;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    private CategoryDto category;
 
     private String description;
 
-    @Transient
-    private Long confirmedRequests = 0L;
+    private Long confirmedRequests;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdOn;
@@ -38,7 +33,6 @@ public class Event {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
 
-    @Column(name = "initiator_id", nullable = false)
     private Long initiator;
 
     private Boolean paid;
@@ -50,11 +44,9 @@ public class Event {
 
     private Boolean requestModeration;
 
-    @OneToOne
-    @JoinColumn(name = "location_id")
-    private Location location;
+    private LocationDto location;
 
-    @Enumerated(EnumType.STRING)
     private StateEvent state;
 
+    private Long views;
 }

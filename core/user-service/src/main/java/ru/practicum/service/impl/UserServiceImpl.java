@@ -11,8 +11,8 @@ import ru.practicum.exception.NotFoundException;
 import ru.practicum.mapper.UserMapper;
 import ru.practicum.model.User;
 import ru.practicum.repository.UserRepository;
-import ru.practicum.user.dto.NewUserRequest;
-import ru.practicum.user.dto.UserDto;
+import ru.practicum.dto.NewUserRequest;
+import ru.practicum.dto.UserDto;
 import ru.practicum.service.UserService;
 
 import java.util.List;

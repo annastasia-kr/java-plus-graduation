@@ -3,12 +3,12 @@ package ru.practicum.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.event.dto.EventResult;
-import ru.practicum.request.client.RequestClient;
-import ru.practicum.request.dto.EventRequestStatusUpdateDto;
-import ru.practicum.request.dto.EventRequestStatusUpdateResult;
-import ru.practicum.request.dto.RequestDto;
-import ru.practicum.request.enums.RequestStatus;
+import ru.practicum.dto.EventResult;
+import ru.practicum.client.RequestClient;
+import ru.practicum.dto.EventRequestStatusUpdateDto;
+import ru.practicum.dto.EventRequestStatusUpdateResult;
+import ru.practicum.dto.RequestDto;
+import ru.practicum.enums.RequestStatus;
 import ru.practicum.service.RequestService;
 
 import java.util.List;

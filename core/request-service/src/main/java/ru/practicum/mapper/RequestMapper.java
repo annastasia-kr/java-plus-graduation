@@ -3,7 +3,7 @@ package ru.practicum.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.practicum.model.Request;
-import ru.practicum.request.dto.RequestDto;
+import ru.practicum.dto.RequestDto;
 
 @Mapper(componentModel = "spring")
 public interface RequestMapper {

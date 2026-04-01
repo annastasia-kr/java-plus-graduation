@@ -3,8 +3,8 @@ package ru.practicum.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ru.practicum.request.enums.RequestStatus;
-import ru.practicum.event.dto.EventResult;
+import ru.practicum.enums.RequestStatus;
+import ru.practicum.dto.EventResult;
 import ru.practicum.model.Request;
 
 import java.util.List;
