@@ -30,13 +30,13 @@ public class AdminCompilationController {
 
     @DeleteMapping("/{compId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable @Positive @NotNull Long compId) {
+    public void deleteById(@PathVariable @NotNull Long compId) {
         log.trace("AdminCompilationController deleteById {}", compId);
         service.deleteById(compId);
     }
 
     @PatchMapping("/{compId}")
-    public CompilationDto updateById(@PathVariable @Positive @NotNull Long compId,
+    public CompilationDto updateById(@PathVariable @NotNull Long compId,
                                      @RequestBody @Valid UpdateCompilationRequest compilationData) {
         log.trace("AdminCompilationController updateById {}", compId);
         return service.updateById(compId, compilationData);

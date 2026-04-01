@@ -28,7 +28,7 @@ public class PublicCompilationController {
     }
 
     @GetMapping("/{compId}")
-    public CompilationDto findById(@PathVariable @Positive @NotNull Long compId) {
+    public CompilationDto findById(@PathVariable @NotNull Long compId) {
         log.trace("PublicCompilationController findById {}", compId);
         return service.findById(compId);
     }

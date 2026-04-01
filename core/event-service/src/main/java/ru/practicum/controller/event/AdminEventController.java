@@ -42,7 +42,7 @@ public class AdminEventController {
 
     @PatchMapping("/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public EventDto updateEvent(@PathVariable @Positive Long eventId,
+    public EventDto updateEvent(@PathVariable Long eventId,
                                 @Valid @RequestBody UpdateEventDtoAdminRequest updateEventDtoAdminRequest) {
 
         log.trace("AdminEventController updateEvent {} {}", eventId, updateEventDtoAdminRequest);

@@ -23,7 +23,7 @@ public class PrivateRequestController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<RequestDto> getUserRequests(@PathVariable @Positive Long userId) {
+    public List<RequestDto> getUserRequests(@PathVariable Long userId) {
         log.info("GET /users/{}/requests - получение запросов пользователя", userId);
         return service.getUserRequests(userId);
     }
@@ -31,8 +31,8 @@ public class PrivateRequestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RequestDto create(
-            @PathVariable @Positive Long userId,
-            @RequestParam @NotNull @Positive Long eventId) {
+            @PathVariable Long userId,
+            @RequestParam @NotNull Long eventId) {
         log.info("POST /users/{}/requests - создание запроса на участие в событии {}", userId, eventId);
         return service.create(userId, eventId);
     }
@@ -40,8 +40,8 @@ public class PrivateRequestController {
     @PatchMapping("/{requestId}/cancel")
     @ResponseStatus(HttpStatus.OK)
     public RequestDto cancelRequest(
-            @PathVariable @Positive Long userId,
-            @PathVariable @Positive Long requestId) {
+            @PathVariable Long userId,
+            @PathVariable Long requestId) {
         log.info("PATCH /users/{}/requests/{}/cancel - отмена запроса", userId, requestId);
         return service.cancelRequest(userId, requestId);
     }
