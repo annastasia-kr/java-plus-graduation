@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.service.UserService;
+import ru.practicum.user.client.UserClient;
 import ru.practicum.user.dto.UserDto;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 @Slf4j
-public class InternalUserController {
+public class InternalUserController implements UserClient {
 
     private final UserService userService;
 
