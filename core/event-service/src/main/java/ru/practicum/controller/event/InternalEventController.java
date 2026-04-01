@@ -18,8 +18,8 @@ public class InternalEventController implements EventClient {
 
     private final EventService eventService;
 
-    @GetMapping("/{id}")
-    public EventDto getEvent(@PathVariable Long id) {
+    @Override
+    public EventDto getEvent(Long id) {
         return eventService.getEvent(id);
     }
 

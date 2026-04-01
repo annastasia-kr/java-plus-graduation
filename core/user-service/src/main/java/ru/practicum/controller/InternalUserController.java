@@ -17,9 +17,8 @@ public class InternalUserController implements UserClient {
 
     private final UserService userService;
 
-    @GetMapping
-    public List<UserDto> getUsers(
-            @RequestParam List<Long> ids) {
+    @Override
+    public List<UserDto> getUsers(List<Long> ids) {
         log.info("GET /api/v1/users - получение списка пользователей, ids={}", ids);
         return userService.getUsers(ids);
     }

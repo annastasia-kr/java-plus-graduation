@@ -21,24 +21,24 @@ public class InternalRequestController implements RequestClient {
 
     private final RequestService requestService;
 
-    @GetMapping("/{eventId}/count")
-    public long countByEventIdAndStatus(@PathVariable Long eventId, RequestStatus status) {
+    @Override
+    public long countByEventIdAndStatus(Long eventId, RequestStatus status) {
         return requestService.countByEventIdAndStatus(eventId, status);
     }
 
-    @GetMapping("/{eventId}")
-    public List<RequestDto> getRequestsByEventId(@PathVariable Long eventId) {
+    @Override
+    public List<RequestDto> getRequestsByEventId(Long eventId) {
         return requestService.getRequestsByEventId(eventId);
     }
 
-    @GetMapping("/count")
-    public List<EventResult> countByEventIdsAndStatus(@RequestParam List<Long> eventIds, RequestStatus status) {
+    @Override
+    public List<EventResult> countByEventIdsAndStatus(List<Long> eventIds, RequestStatus status) {
         return requestService.countByEventIdsAndStatus(eventIds, status);
     }
 
-    @PatchMapping("/user/{userId}/event/{eventId}")
-    public EventRequestStatusUpdateResult updateRequestStatus(@PathVariable Long userId, @PathVariable Long eventId,
-                                                       @RequestBody EventRequestStatusUpdateDto eventRequestStatusUpdateDto) {
+    @Override
+    public EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId,
+                                                       EventRequestStatusUpdateDto eventRequestStatusUpdateDto) {
         return requestService.updateRequestStatus(userId, eventId, eventRequestStatusUpdateDto);
     }
 
