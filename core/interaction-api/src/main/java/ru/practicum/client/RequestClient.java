@@ -16,16 +16,16 @@ import java.util.List;
 @FeignClient(name = "request-service")
 public interface RequestClient {
 
-    @GetMapping("/{eventId}/count")
+    @GetMapping("/api/v1/requests/{eventId}/count")
     long countByEventIdAndStatus(@PathVariable Long eventId, RequestStatus status);
 
-    @GetMapping("/{eventId}")
+    @GetMapping("/api/v1/requests/{eventId}")
     List<RequestDto> getRequestsByEventId(@PathVariable Long eventId);
 
-    @GetMapping("/count")
+    @GetMapping("/api/v1/requests/count")
     List<EventResult> countByEventIdsAndStatus(@RequestParam List<Long> eventIds, RequestStatus status);
 
-    @PatchMapping("/user/{userId}/event/{eventId}")
+    @PatchMapping("/api/v1/requests/user/{userId}/event/{eventId}")
     EventRequestStatusUpdateResult updateRequestStatus(@PathVariable Long userId, @PathVariable Long eventId,
                                                        @RequestParam EventRequestStatusUpdateDto eventRequestStatusUpdateDto);
 }
