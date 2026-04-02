@@ -19,7 +19,7 @@ public interface RequestClient {
     @PatchMapping("/user/{userId}/event/{eventId}/status")
     EventRequestStatusUpdateResult updateRequestStatus(@PathVariable Long userId,
                                                        @PathVariable Long eventId,
-                                                       @RequestBody EventRequestStatusUpdateDto request);
+                                                       @RequestBody EventRequestStatusUpdateDto eventRequestStatusUpdateDto);
 
     @GetMapping("/confirmed/count")
     List<EventResult> countRequestsForEvents(@RequestParam("eventIds") List<Long> eventIds,
