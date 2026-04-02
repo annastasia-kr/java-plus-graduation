@@ -7,6 +7,7 @@ import ru.practicum.event.dto.EventDto;
 import ru.practicum.service.event.EventService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/events")
@@ -16,9 +17,9 @@ public class InternalEventController {
 
     private final EventService eventService;
 
-    @GetMapping
-    public List<EventDto> getEvents(@RequestParam("eventIds") List<Long> eventIds) {
-        return eventService.getEvents(eventIds);
+    @GetMapping("{/id}")
+    public Optional<EventDto> getEvent(@PathVariable Long id) {
+        return eventService.getEvent(id);
     }
 
 

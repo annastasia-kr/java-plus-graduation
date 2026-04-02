@@ -229,8 +229,8 @@ public class RequestServiceImpl implements RequestService {
     }
 
     private Optional<EventDto> findEventById(Long eventId) {
-        List<EventDto> eventDtos = eventClient.getEvents(List.of(eventId));
-        return eventDtos.isEmpty() ? Optional.empty() : Optional.of(eventDtos.getFirst());
+        Optional<EventDto> event = eventClient.getEventById(eventId);
+        return event.isEmpty() ? Optional.empty() : event;
     }
 
 }

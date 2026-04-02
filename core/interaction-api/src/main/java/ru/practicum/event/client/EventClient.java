@@ -2,15 +2,14 @@ package ru.practicum.event.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.practicum.event.dto.EventDto;
 
-import java.util.List;
+import java.util.Optional;
 
 @FeignClient(name = "event-service", path = "api/v1/events")
 public interface EventClient {
 
-    @GetMapping
-    List<EventDto> getEvents(@RequestParam("eventIds") List<Long> eventIds);
-
+    @GetMapping("{/id}")
+    Optional<EventDto> getEventById(@PathVariable Long id);
 }
