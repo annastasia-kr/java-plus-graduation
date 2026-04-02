@@ -475,7 +475,7 @@ public class EventServiceImpl implements EventService {
 
     private void applyUserFilter(List<Predicate> predicates, Root<Event> root, List<Long> users) {
         if (users != null && !users.isEmpty()) {
-            predicates.add(root.get("initiator").get("id").in(users));
+            predicates.add(root.get("initiator").in(users));
         }
     }
 
