@@ -1,6 +1,5 @@
-FROM eclipse-temurin:21-jre-jammy
-VOLUME /tmp
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
 
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app.jar"]
+COPY target/gateway-server-0.0.1-SNAPSHOT.jar app.jar
+CMD ["java", "-jar", "app.jar"]

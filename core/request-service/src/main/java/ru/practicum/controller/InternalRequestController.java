@@ -35,7 +35,7 @@ public class InternalRequestController {
         return requestService.countByEventIdsAndStatus(eventIds, status);
     }
 
-    @GetMapping("/{eventId}/count")
+    @PatchMapping("/user/{userId}/event/{eventId}")
     public EventRequestStatusUpdateResult updateRequestStatus(@PathVariable Long userId, Long eventId,
                                                        EventRequestStatusUpdateDto eventRequestStatusUpdateDto) {
         return requestService.updateRequestStatus(userId, eventId, eventRequestStatusUpdateDto);
