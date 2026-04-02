@@ -7,24 +7,21 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
-  # Config Server
   cloud:
     config:
       enabled: false
 
-  # PostgreSQL Configuration
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/ewm_main_db
-    username: ewm_user
-    password: ewm_password
+    url: jdbc:postgresql://localhost:5432/events-db
+    username: postgres
+    password: 12345
 
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10
       minimum-idle: 5
 
-  # JPA Configuration
   jpa:
     hibernate:
       ddl-auto: validate
@@ -37,7 +34,6 @@ spring:
 
     generate-ddl: false
 
-  # SQL init
   sql:
     init:
       mode: always
@@ -45,7 +41,7 @@ spring:
       continue-on-error: false
     initialization-mode: always
 
-# Eureka
+
 eureka:
   client:
     service-url:
@@ -55,7 +51,7 @@ eureka:
   instance:
     prefer-ip-address: true
 
-# Actuator
+
 management:
   endpoints:
     web:
@@ -65,9 +61,12 @@ management:
     health:
       show-details: always
 
-# Logging
 logging:
   level:
-    ru.practicum: DEBUG
-    org.springframework.jdbc: DEBUG
-    org.springframework.orm.jpa: DEBUG
+    root: DEBUG
+    org.springframework.web: TRACE
+    org.springframework.cloud: TRACE
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+    feign: DEBUG
+    com.netflix.discovery: DEBUG
