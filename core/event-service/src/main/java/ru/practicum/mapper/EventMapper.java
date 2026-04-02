@@ -37,7 +37,7 @@ public interface EventMapper {
     @Mapping(source = "event.location", target = "location")
     @Mapping(source = "confirmedRequests", target = "confirmedRequests")
     @Mapping(source = "views", target = "views")
-    @Mapping(target = "initiator", ignore = true)
+    @Mapping(source = "event.initiator", target = "initiator")
     EventDto toEventDto(Event event, Long confirmedRequests, Long views);
 
     @Mapping(source = "category", target = "category")
@@ -49,7 +49,7 @@ public interface EventMapper {
     @Mapping(source = "paid", target = "paid")
     @Mapping(source = "participantLimit", target = "participantLimit")
     @Mapping(target = "views", constant = "0L")
-    @Mapping(target = "initiator", ignore = true)
+    @Mapping(source = "event.initiator", target = "initiator")
     EventShortDto toEventShortDto(Event event);
 
 }
