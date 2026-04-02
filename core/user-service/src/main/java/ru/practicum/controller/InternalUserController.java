@@ -16,7 +16,7 @@ public class InternalUserController {
 
     private final UserService userService;
 
-    @GetMapping("/api/v1/users")
+    @GetMapping
     public List<UserDto> getUsers(@RequestParam List<Long> ids) {
         log.info("GET /api/v1/users - получение списка пользователей, ids={}", ids);
         return userService.getUsers(ids);
