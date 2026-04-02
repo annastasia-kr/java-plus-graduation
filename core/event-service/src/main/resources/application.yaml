@@ -1,39 +1,73 @@
+server:
+  port: 8087
+
 spring:
   application:
     name: event-service
+  main:
+    allow-bean-definition-overriding: true
 
-  config:
-    import: "configserver:"
-
+  # Config Server
   cloud:
     config:
-      # не загружать другие компоненты, до получения конфигурации
-      fail-fast: true
-      # если config-server недоступен - делать несколько попыток подключиться
-      retry:
-        # используем случайный backoff между попытками
-        useRandomPolicy: true
-        # максимальный интервал в течении которого делаем попытки (6000 миллисекунд = 6 сек)
-        max-interval: 6000
-    discovery:
-      enabled: true
-      serviceId: config-server
+      enabled: false
 
+  # PostgreSQL Configuration
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ewm_main_db
+    username: ewm_user
+    password: ewm_password
 
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
+      minimum-idle: 5
+
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: public
+
+    generate-ddl: false
+
+  # SQL init
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      continue-on-error: false
+    initialization-mode: always
+
+# Eureka
 eureka:
   client:
-    serviceUrl:
-      defaultZone: http://${eureka.instance.hostname:localhost}:${eureka.instance.port:8761}/eureka/
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
   instance:
-    preferIpAddress: true
-    instance-id: "${spring.application.name}:${random.value}"
+    prefer-ip-address: true
 
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# Logging
 logging:
   level:
-    root: DEBUG
-    org.springframework.web: TRACE
-    org.springframework.cloud: TRACE
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql: TRACE
-    feign: DEBUG
-    com.netflix.discovery: DEBUG
+    ru.practicum: DEBUG
+    org.springframework.jdbc: DEBUG
+    org.springframework.orm.jpa: DEBUG
