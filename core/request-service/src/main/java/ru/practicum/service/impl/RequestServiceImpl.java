@@ -19,7 +19,6 @@ import ru.practicum.model.Request;
 import ru.practicum.repository.RequestRepository;
 import ru.practicum.dto.RequestDto;
 import ru.practicum.service.RequestService;
-import ru.practicum.client.user.UserClient;
 import ru.practicum.dto.UserDto;
 
 import java.time.LocalDateTime;

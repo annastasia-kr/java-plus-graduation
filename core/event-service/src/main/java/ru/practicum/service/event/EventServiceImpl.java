@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.client.impl.StatsClient;
 import ru.practicum.StatsDto;
-import ru.practicum.exception.*;
 import ru.practicum.mapper.EventMapper;
 import ru.practicum.mapper.LocationMapper;
 import ru.practicum.model.Category;
@@ -35,7 +34,6 @@ import ru.practicum.dto.EventRequestStatusUpdateDto;
 import ru.practicum.dto.EventRequestStatusUpdateResult;
 import ru.practicum.dto.RequestDto;
 import ru.practicum.enums.RequestStatus;
-import ru.practicum.client.user.UserClient;
 import ru.practicum.dto.UserDto;
 
 import java.lang.IllegalStateException;
