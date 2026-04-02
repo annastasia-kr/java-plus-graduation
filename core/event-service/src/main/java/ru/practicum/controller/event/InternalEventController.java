@@ -17,7 +17,7 @@ public class InternalEventController {
 
     private final EventService eventService;
 
-    @GetMapping("{/id}")
+    @GetMapping("/{id}")
     public Optional<EventDto> getEvent(@PathVariable Long id) {
         return eventService.getEvent(id);
     }

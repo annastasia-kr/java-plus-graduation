@@ -10,6 +10,6 @@ import java.util.Optional;
 @FeignClient(name = "event-service", path = "api/v1/events")
 public interface EventClient {
 
-    @GetMapping("{/id}")
+    @GetMapping("/{id}")
     Optional<EventDto> getEventById(@PathVariable Long id);
 }
