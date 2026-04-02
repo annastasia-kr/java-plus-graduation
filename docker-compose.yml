@@ -9,11 +9,6 @@ services:
       POSTGRES_DB: events-db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345
-    healthcheck:
-      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
-      timeout: 5s
-      interval: 10s
-      retries: 15
 
   users-db:
     image: postgres:16.1
@@ -24,11 +19,6 @@ services:
       POSTGRES_DB: users-db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345
-    healthcheck:
-      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
-      timeout: 5s
-      interval: 10s
-      retries: 15
 
   requests-db:
     image: postgres:16.1
@@ -39,11 +29,6 @@ services:
       POSTGRES_DB: requests-db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345
-    healthcheck:
-      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
-      timeout: 5s
-      interval: 10s
-      retries: 15
 
   stats-db:
     image: postgres:16.1
@@ -54,103 +39,3 @@ services:
       POSTGRES_DB: stats-db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345
-    healthcheck:
-      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
-      timeout: 5s
-      interval: 10s
-      retries: 15
-
-  discovery-server:
-    image: discovery-server:latest
-    build: infra/discovery-server
-    container_name: discovery-server
-    ports:
-      - "8761:8761"
-    restart: unless-stopped
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
-      interval: 30s
-      timeout: 20s
-      retries: 5
-      start_period: 30s
-
-    config-server:
-      image: config-server:latest
-      build: infra/config-server
-      container_name: config-server
-      ports:
-        - "8888:8888"
-      depends_on:
-        discovery-server:
-          condition: service_healthy
-      environment:
-        - SERVER_PORT=8888
-        - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
-
-    gateway-server:
-      image: gateway-server:latest
-      build: infra/gateway-server
-      container_name: gateway-server
-      ports:
-        - "8080:8080"
-      depends_on:
-        discovery-server:
-          condition: service_healthy
-        config-server:
-          condition: service_started
-      environment:
-        - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
-
-  event-service:
-    image: event-service:latest
-    container_name: event-service
-    depends_on:
-      events-db:
-        condition: service_healthy
-      discovery-server:
-        condition: service_healthy
-      config-server:
-        condition: service_started
-    environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
-
-    user-service:
-      image: user-service:latest
-      container_name: user-service
-      depends_on:
-        users-db:
-          condition: service_healthy
-        discovery-server:
-          condition: service_healthy
-        config-server:
-          condition: service_started
-      environment:
-        - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
-
-    request-service:
-      image: request-service:latest
-      container_name: request-service
-      depends_on:
-        requests-db:
-          condition: service_healthy
-        discovery-server:
-          condition: service_healthy
-        config-server:
-          condition: service_started
-      environment:
-        SPRING_PROFILES_ACTIVE: docker
-         - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
-
-
-    stats-server:
-      image: stats-server:latest
-      container_name: stats-server
-      depends_on:
-        stats-db:
-          condition: service_healthy
-        discovery-server:
-          condition: service_healthy
-        config-server:
-          condition: service_started
-      environment:
-        - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
