@@ -17,7 +17,12 @@ spring:
     url: jdbc:postgresql://localhost:6544/users-db
     username: postgres
     password: 12345
-
+services:
+  stats-server-id: stats-server
+client:
+  stats:
+    connect-timeout: 5000
+    read-timeout: 10000
 logging:
   level:
     org.springframework.orm.jpa: INFO
