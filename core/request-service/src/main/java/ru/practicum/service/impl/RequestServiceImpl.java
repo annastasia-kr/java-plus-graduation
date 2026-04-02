@@ -224,8 +224,8 @@ public class RequestServiceImpl implements RequestService {
     }
 
     private Optional<UserDto> findUserById(Long userId) {
-        List<UserDto> userDtos = userClient.getUsers(List.of(userId));
-        return userDtos.isEmpty() ? Optional.empty() : Optional.of(userDtos.getFirst());
+        Optional<UserDto> user = userClient.getUserById(userId);
+        return user.isEmpty() ? Optional.empty() : user;
     }
 
     private Optional<EventDto> findEventById(Long eventId) {
