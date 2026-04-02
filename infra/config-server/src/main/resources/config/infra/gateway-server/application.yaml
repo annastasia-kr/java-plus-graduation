@@ -12,11 +12,11 @@ spring:
         - id: user_service_route
           uri: lb://user-service
           predicates:
-            - Path=/admin/users/**
+            - Path=/admin/users/**, /api/v1/users/**
         - id: request_service_route
           uri: lb://request-service
           predicates:
-            - Path=/users/*/requests/**
+            - Path=/users/*/requests/**, /api/v1/requests/**
         - id: event_service_route
           uri: lb://event-service
           predicates:
