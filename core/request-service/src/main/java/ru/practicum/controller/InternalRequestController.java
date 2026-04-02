@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.EventResult;
-import ru.practicum.client.RequestClient;
 import ru.practicum.dto.EventRequestStatusUpdateDto;
 import ru.practicum.dto.EventRequestStatusUpdateResult;
 import ru.practicum.dto.RequestDto;
@@ -17,27 +16,27 @@ import java.util.List;
 @RequestMapping("/api/v1/requests")
 @RequiredArgsConstructor
 @Slf4j
-public class InternalRequestController implements RequestClient {
+public class InternalRequestController {
 
     private final RequestService requestService;
 
-    @Override
-    public long countByEventIdAndStatus(Long eventId, RequestStatus status) {
+    @GetMapping("/{eventId}/count")
+    public long countByEventIdAndStatus(@PathVariable Long eventId, RequestStatus status) {
         return requestService.countByEventIdAndStatus(eventId, status);
     }
 
-    @Override
-    public List<RequestDto> getRequestsByEventId(Long eventId) {
+    @GetMapping("/{eventId}")
+    public List<RequestDto> getRequestsByEventId(@PathVariable Long eventId) {
         return requestService.getRequestsByEventId(eventId);
     }
 
-    @Override
-    public List<EventResult> countByEventIdsAndStatus(List<Long> eventIds, RequestStatus status) {
+    @GetMapping("/count")
+    public List<EventResult> countByEventIdsAndStatus(@RequestParam List<Long> eventIds, RequestStatus status) {
         return requestService.countByEventIdsAndStatus(eventIds, status);
     }
 
-    @Override
-    public EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId,
+    @GetMapping("/{eventId}/count")
+    public EventRequestStatusUpdateResult updateRequestStatus(@PathVariable Long userId, Long eventId,
                                                        EventRequestStatusUpdateDto eventRequestStatusUpdateDto) {
         return requestService.updateRequestStatus(userId, eventId, eventRequestStatusUpdateDto);
     }

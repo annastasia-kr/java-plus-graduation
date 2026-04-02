@@ -13,7 +13,7 @@ import ru.practicum.enums.RequestStatus;
 
 import java.util.List;
 
-@FeignClient(name = "request-service", path = "/api/v1/requests", fallback = RequestClientFallback.class)
+@FeignClient(name = "request-service")
 public interface RequestClient {
 
     @GetMapping("/{eventId}/count")
