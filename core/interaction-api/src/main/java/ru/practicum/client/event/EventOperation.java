@@ -1,15 +1,15 @@
-package ru.practicum.client;
+package ru.practicum.client.event;
 
-import org.springframework.cloud.openfeign.FeignClient;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.practicum.dto.EventDto;
 
 import java.util.Optional;
 
-@FeignClient(name = "event-service")
-public interface EventClient {
+public interface EventOperation {
 
     @GetMapping("/api/v1/events/{id}")
-    Optional<EventDto> getEvent(@PathVariable Long id);
+    Optional<EventDto> getEvent(@PathVariable @NotNull Long id);
+
 }

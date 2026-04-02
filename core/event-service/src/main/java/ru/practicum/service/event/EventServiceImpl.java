@@ -30,12 +30,12 @@ import ru.practicum.model.Location;
 import ru.practicum.repository.CategoryRepository;
 import ru.practicum.repository.EventRepository;
 import ru.practicum.repository.LocationRepository;
-import ru.practicum.client.RequestClient;
+import ru.practicum.client.request.RequestClient;
 import ru.practicum.dto.EventRequestStatusUpdateDto;
 import ru.practicum.dto.EventRequestStatusUpdateResult;
 import ru.practicum.dto.RequestDto;
 import ru.practicum.enums.RequestStatus;
-import ru.practicum.client.UserClient;
+import ru.practicum.client.user.UserClient;
 import ru.practicum.dto.UserDto;
 
 import java.lang.IllegalStateException;
