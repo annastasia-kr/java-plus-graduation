@@ -19,7 +19,6 @@ spring:
       enabled: true
       serviceId: config-server
 
-
 eureka:
   client:
     serviceUrl:

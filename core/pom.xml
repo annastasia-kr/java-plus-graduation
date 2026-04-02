@@ -18,11 +18,13 @@
         <module>user-service</module>
         <module>request-service</module>
     </modules>
+
+    <properties>
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <querydsl.version>5.1.0</querydsl.version>
+    </properties>
+
     <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
@@ -46,13 +48,13 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>1.6.3</version>
+            <version>${mapstruct.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-core</artifactId>
-            <version>5.1.0</version>
+            <version>${querydsl.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

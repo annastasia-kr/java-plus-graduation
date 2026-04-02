@@ -8,7 +8,6 @@ import ru.practicum.user.dto.NewUserRequest;
 import ru.practicum.user.dto.UserDto;
 import ru.practicum.user.dto.UserShortDto;
 
-
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
