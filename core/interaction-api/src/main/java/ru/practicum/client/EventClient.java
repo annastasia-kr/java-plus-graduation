@@ -7,9 +7,9 @@ import ru.practicum.dto.EventDto;
 
 import java.util.Optional;
 
-@FeignClient(name = "event-service", path = "/api/v1/events", fallback = EventClientFallback.class)
+@FeignClient(name = "event-service")
 public interface EventClient {
 
-    @GetMapping("/{id}")
+    @GetMapping("/api/v1/events/{id}")
     Optional<EventDto> getEvent(@PathVariable Long id);
 }
