@@ -70,3 +70,9 @@ logging:
     org.hibernate.type.descriptor.sql: TRACE
     feign: DEBUG
     com.netflix.discovery: DEBUG
+services:
+  stats-server-id: stats-server
+client:
+  stats:
+    connect-timeout: 5000
+    read-timeout: 10000
