@@ -11,7 +11,6 @@ import ru.practicum.request.enums.RequestStatus;
 import ru.practicum.service.RequestService;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/requests")

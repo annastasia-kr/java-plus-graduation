@@ -510,7 +510,7 @@ public class EventServiceImpl implements EventService {
     }
 
     private Optional<UserDto> findUserById(Long userId) {
-        List<UserDto> users = userClient.getUsers(List.of(userId));
-        return users.isEmpty() ? Optional.empty() : Optional.of(users.getFirst());
+        Optional<UserDto> user = userClient.getUserById(userId);
+        return user.isEmpty() ? Optional.empty() : user;
     }
 }

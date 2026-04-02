@@ -16,6 +16,7 @@ import ru.practicum.user.dto.UserDto;
 import ru.practicum.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,5 +80,10 @@ public class UserServiceImpl implements UserService {
 
         userRepository.delete(user);
         log.info("Пользователь с ID {} удален", userId);
+    }
+
+    @Override
+    public Optional<UserDto> getUserById(Long id) {
+        return userRepository.findById(id).map(userMapper::toUserDto);
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.service.UserService;
 import ru.practicum.user.dto.UserDto;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -16,9 +16,8 @@ public class InternalUserController {
 
     private final UserService userService;
 
-    @GetMapping
-    public List<UserDto> getUsers(@RequestParam List<Long> ids) {
-        log.info("GET /api/v1/users - получение списка пользователей, ids={}", ids);
-        return userService.getUsers(ids);
+    @GetMapping("/{id}")
+    public Optional<UserDto> getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
     }
 }
