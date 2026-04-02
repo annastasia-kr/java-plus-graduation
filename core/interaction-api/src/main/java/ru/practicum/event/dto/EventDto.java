@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.event.enums.StateEvent;
-import ru.practicum.user.dto.UserShortDto;
 
 import java.time.LocalDateTime;
 
@@ -33,7 +32,7 @@ public class EventDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
 
-    private UserShortDto initiator;
+    private Long initiator;
 
     private Boolean paid;
 
