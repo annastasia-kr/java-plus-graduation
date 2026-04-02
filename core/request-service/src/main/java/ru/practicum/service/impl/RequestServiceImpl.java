@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.client.EventClient;
+import ru.practicum.client.event.EventClient;
 import ru.practicum.dto.EventDto;
 import ru.practicum.dto.EventResult;
 import ru.practicum.enums.StateEvent;
@@ -19,7 +19,7 @@ import ru.practicum.model.Request;
 import ru.practicum.repository.RequestRepository;
 import ru.practicum.dto.RequestDto;
 import ru.practicum.service.RequestService;
-import ru.practicum.client.UserClient;
+import ru.practicum.client.user.UserClient;
 import ru.practicum.dto.UserDto;
 
 import java.time.LocalDateTime;
