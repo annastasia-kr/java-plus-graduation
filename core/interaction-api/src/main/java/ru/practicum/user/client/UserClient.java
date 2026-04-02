@@ -7,8 +7,9 @@ import ru.practicum.user.dto.UserDto;
 
 import java.util.List;
 
-@FeignClient(name = "user-service")
+@FeignClient(name = "user-service", path = "api/v1/users")
 public interface UserClient {
-    @GetMapping("api/v1/events/{id}")
-    List<UserDto> getUsers(@RequestParam List<Long> userId);
+
+    @GetMapping
+    List<UserDto> getUsers(@RequestParam List<Long> userIds);
 }

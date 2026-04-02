@@ -39,4 +39,6 @@ public interface EventService {
     Collection<EventDto> getEventsPublic(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart,
                                          LocalDateTime rangeEnd, Boolean onlyAvailable, Sort sort, Integer from,
                                          Integer size, HttpServletRequest httpServletRequest);
+
+    List<EventDto> getEvents(List<Long> eventIds);
 }

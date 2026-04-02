@@ -198,6 +198,11 @@ public class RequestServiceImpl implements RequestService {
                         EventResult::getCount));
     }
 
+    @Override
+    public List<EventResult> countRequestsForEvents(List<Long> eventIds, RequestStatus requestStatus) {
+        return requestRepository.countByEventIdsAndStatus(eventIds, requestStatus);
+    }
+
     private void validateRequestCreation(Long userId, EventDto event) {
         // Проверяем, что инициатор не подает заявку на свое же событие
         if (event.getInitiator().equals(userId)) {

@@ -95,7 +95,7 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findById(eventId).orElseThrow(
                 () -> new NotFoundException("Event not found"));
         Long confirmedRequests = requestClient.findAllByEventId(eventId)
-        .stream()
+                .stream()
                 .filter(e -> e.getStatus().equals(RequestStatus.CONFIRMED))
                 .count();
 
@@ -394,6 +394,28 @@ public class EventServiceImpl implements EventService {
                     return eventMapper.toEventDto(event, confirmedRequests, views);
                 })
                 .toList();
+    }
+
+
+    @Override
+    public List<EventDto> getEvents(List<Long> eventIds) {
+        return eventRepository.findAllById(eventIds).stream()
+                .map(event -> {
+                    // Получаем количество подтверждённых запросов для текущего события
+                    Long confirmedRequests = requestClient.findAllByEventId(event.getId())
+                            .stream()
+                            .filter(e -> e.getStatus().equals(RequestStatus.CONFIRMED))
+                            .count();
+                    LocalDateTime start = event.getPublishedOn() == null ? event.getCreatedOn() : event.getPublishedOn();
+
+                    // Получаем просмотры для текущего события
+                    // Здесь нужно подставить корректные значения для start и end
+                    Long views = getEventViews(start, event.getId());
+
+                    // Преобразуем сущность в DTO, передавая дополнительные данные
+                    return eventMapper.toEventDto(event, confirmedRequests, views);
+                })
+                .collect(Collectors.toList());
     }
 
     @Override

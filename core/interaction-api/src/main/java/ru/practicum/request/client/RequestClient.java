@@ -8,11 +8,9 @@ import ru.practicum.request.dto.EventRequestStatusUpdateResult;
 import ru.practicum.request.dto.RequestDto;
 import ru.practicum.request.enums.RequestStatus;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
-@FeignClient(name = "request-service")
+@FeignClient(name = "request-service", path = "api/v1/requests")
 public interface RequestClient {
 
     @GetMapping("api/v1/requests/{id}")
