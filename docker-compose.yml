@@ -1,73 +1,71 @@
 services:
-
-  events-db:
-    image: postgres:16.1
-    container_name: events-db
-    ports:
-      - "6542:5432"
-    environment:
-      POSTGRES_DB: events-db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 12345
-    volumes:
-      - ./core/event-service/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -p 5432" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-
-  users-db:
-    image: postgres:16.1
-    container_name: users-db
-    ports:
-      - "6544:5432"
-    environment:
-      POSTGRES_DB: users-db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 12345
-    volumes:
-      - ./core/user-service/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -p 5432" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-
-  requests-db:
-    image: postgres:16.1
-    container_name: requests-db
-    ports:
-      - "6545:5432"
-    environment:
-      POSTGRES_DB: requests-db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 12345
-    volumes:
-      - ./core/request-service/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -p 5432" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-
   stats-db:
     image: postgres:16.1
     container_name: stats-db
     ports:
-      - "6543:5432"
+      - "5432:5432"
     environment:
       POSTGRES_DB: stats-db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345
     volumes:
-      - ./stats/stats-server/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - stats-db-data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -p 5432" ]
-      interval: 10s
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
       timeout: 5s
-      retries: 5
-      start_period: 10s
+      interval: 5s
+      retries: 10
+
+  event-db:
+    image: postgres:16.1
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: event-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      - event-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10
+
+  user-db:
+    image: postgres:16.1
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: user-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10
+
+  request-db:
+    image: postgres:16.1
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: request-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      - request-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10
+
+volumes:
+  event-db-data:
+  stats-db-data:
+  user-db-data:
+  request-db-data:

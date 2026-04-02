@@ -4,27 +4,26 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.client.event.EventClient;
-import ru.practicum.dto.EventDto;
-import ru.practicum.dto.EventResult;
-import ru.practicum.enums.StateEvent;
+import ru.practicum.event.client.EventClient;
+import ru.practicum.event.dto.EventDto;
+import ru.practicum.event.dto.EventResult;
+import ru.practicum.event.enums.StateEvent;
 import ru.practicum.exception.DataConflictException;
-import ru.practicum.dto.EventRequestStatusUpdateDto;
-import ru.practicum.dto.EventRequestStatusUpdateResult;
-import ru.practicum.enums.RequestStatus;
+import ru.practicum.request.dto.EventRequestStatusUpdateDto;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.mapper.RequestMapper;
 import ru.practicum.model.Request;
 import ru.practicum.repository.RequestRepository;
-import ru.practicum.dto.RequestDto;
+import ru.practicum.request.dto.EventRequestStatusUpdateResult;
+import ru.practicum.request.dto.RequestDto;
+import ru.practicum.request.enums.RequestStatus;
 import ru.practicum.service.RequestService;
-import ru.practicum.dto.UserDto;
+import ru.practicum.user.client.UserClient;
+import ru.practicum.user.dto.UserDto;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,7 +55,7 @@ public class RequestServiceImpl implements RequestService {
 
         UserDto user = findUserById(userId).orElseThrow(
                 () -> new NotFoundException("User (id = " + userId + " not found"));
-        EventDto event = eventClient.getEvent(eventId).orElseThrow(() ->
+        EventDto event = findEventById(eventId).orElseThrow(() ->
                 new NotFoundException("Event (id = " + eventId + " not found"));
 
         validateRequestCreation(userId, event);
@@ -106,11 +105,6 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public long countByEventIdAndStatus(Long eventId, RequestStatus status) {
-        return requestRepository.countByEventIdAndStatus(eventId, status);
-    }
-
-    @Override
     public List<RequestDto> getRequestsByEventId(Long eventId) {
 
         return requestRepository.findAllByEventId(eventId)
@@ -120,14 +114,9 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<EventResult> countByEventIdsAndStatus(List<Long> eventIds, RequestStatus status) {
-        return requestRepository.countByEventIdsAndStatus(eventIds, status);
-    }
-
-    @Override
     public EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateDto eventRequestStatusUpdateDto) {
 
-        EventDto event = eventClient.getEvent(eventId).orElseThrow(() ->
+        EventDto event = findEventById(eventId).orElseThrow(() ->
                 new NotFoundException("Event (id = " + eventId + " not found"));
 
         List<Request> requestsToStatusUpdate = requestRepository
@@ -143,7 +132,10 @@ public class RequestServiceImpl implements RequestService {
 
         // Проверяем, не превысит ли подтверждение лимит участников
         if (updateStatus == RequestStatus.CONFIRMED) {
-            Long confirmedRequestsCount = requestRepository.countByEventIdAndStatus(eventId, RequestStatus.CONFIRMED);
+            Long confirmedRequestsCount = requestRepository.findAllByEventId(eventId)
+                    .stream()
+                    .filter(e -> e.getStatus().equals(RequestStatus.CONFIRMED))
+                    .count();
             if (confirmedRequestsCount + requestsToStatusUpdate.size() > event.getParticipantLimit()) {
                 throw new DataConflictException("Application limit exceeded - confirmation not allowed");
             }
@@ -162,7 +154,10 @@ public class RequestServiceImpl implements RequestService {
 
             // Если после подтверждения будет достигнут лимит, отклоняем все остальные
             // pending заявки
-            Long confirmedRequestsCount = requestRepository.countByEventIdAndStatus(eventId, RequestStatus.CONFIRMED);
+            Long confirmedRequestsCount = requestRepository.findAllByEventId(eventId)
+                    .stream()
+                    .filter(e -> e.getStatus().equals(RequestStatus.CONFIRMED))
+                    .count();
             if (confirmedRequestsCount + requestsToStatusUpdate.size() >= event.getParticipantLimit()) {
                 List<Request> pendingRequests = requestRepository.findAllByEventIdAndStatus(eventId,
                         RequestStatus.PENDING);
@@ -183,6 +178,24 @@ public class RequestServiceImpl implements RequestService {
                 rejectedRequests.stream()
                         .map(requestMapper::toRequestDto)
                         .toList());
+    }
+
+    @Override
+    public List<RequestDto> findAllByEventId(Long id) {
+        return requestRepository.findAllByEventId(id)
+                .stream()
+                .map(requestMapper::toRequestDto)
+                .toList();
+    }
+
+    @Override
+    public Map<Long, Long> countRequestsForEvents(List<Long> eventIds) {
+        return requestRepository
+                .countByEventIdsAndStatus(eventIds, RequestStatus.CONFIRMED)
+                .stream()
+                .collect(Collectors.toMap(
+                        EventResult::getEventId,
+                        EventResult::getCount));
     }
 
     private void validateRequestCreation(Long userId, EventDto event) {
@@ -208,6 +221,11 @@ public class RequestServiceImpl implements RequestService {
     private Optional<UserDto> findUserById(Long userId) {
         List<UserDto> userDtos = userClient.getUsers(List.of(userId));
         return userDtos.isEmpty() ? Optional.empty() : Optional.of(userDtos.getFirst());
+    }
+
+    private Optional<EventDto> findEventById(Long eventId) {
+        List<EventDto> eventDtos = eventClient.getEvents(List.of(eventId));
+        return eventDtos.isEmpty() ? Optional.empty() : Optional.of(eventDtos.getFirst());
     }
 
 }

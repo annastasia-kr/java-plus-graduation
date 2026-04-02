@@ -3,7 +3,7 @@ package ru.practicum.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
-import ru.practicum.enums.StateEvent;
+import ru.practicum.event.enums.StateEvent;
 
 import java.time.LocalDateTime;
 

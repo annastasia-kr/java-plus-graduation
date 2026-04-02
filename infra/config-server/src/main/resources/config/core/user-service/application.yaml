@@ -1,7 +1,7 @@
-server:
-  port: 0
-
 spring:
+  application:
+    name: user-service
+
   jpa:
     show-sql: true
     hibernate:
@@ -14,7 +14,7 @@ spring:
       mode: always
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:6544/users-db
+    url: jdbc:postgresql://localhost:5434/user-db
     username: postgres
     password: 12345
 services:
@@ -23,6 +23,9 @@ client:
   stats:
     connect-timeout: 5000
     read-timeout: 10000
+
+server:
+  port: 0
 logging:
   level:
     org.springframework.orm.jpa: INFO

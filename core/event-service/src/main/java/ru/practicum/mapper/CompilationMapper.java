@@ -2,9 +2,9 @@ package ru.practicum.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.practicum.dto.CompilationDto;
-import ru.practicum.dto.NewCompilationDto;
-import ru.practicum.dto.EventShortDto;
+import ru.practicum.compilation.dto.CompilationDto;
+import ru.practicum.compilation.dto.NewCompilationDto;
+import ru.practicum.event.dto.EventShortDto;
 import ru.practicum.model.Compilation;
 import ru.practicum.model.Event;
 
@@ -22,5 +22,4 @@ public interface CompilationMapper {
     @Mapping(target = "events", ignore = true)
     CompilationDto toCompilationDto(Compilation compilation);
 
-    Collection<EventShortDto> toEventShortDtoCollection(List<Event> events);
 }

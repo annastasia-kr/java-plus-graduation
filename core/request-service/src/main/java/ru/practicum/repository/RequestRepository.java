@@ -3,11 +3,12 @@ package ru.practicum.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ru.practicum.enums.RequestStatus;
-import ru.practicum.dto.EventResult;
+import ru.practicum.event.dto.EventResult;
 import ru.practicum.model.Request;
+import ru.practicum.request.enums.RequestStatus;
 
-import java.util.List;
+import java.util.*;
+
 
 public interface RequestRepository extends JpaRepository<Request, Long> {
 
@@ -16,8 +17,6 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     List<Request> findAllByIdIn(List<Long> requestIds);
 
     List<Request> findAllByEventIdAndStatus(Long eventId, RequestStatus status);
-
-    long countByEventIdAndStatus(Long eventId, RequestStatus status);
 
     List<Request> findAllByRequesterId(Long requesterId);
 
@@ -35,4 +34,5 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             @Param("eventIds") List<Long> eventIds,
             @Param("status") RequestStatus status
     );
+
 }

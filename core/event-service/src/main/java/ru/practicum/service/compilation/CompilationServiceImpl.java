@@ -7,10 +7,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.dto.CompilationDto;
-import ru.practicum.dto.NewCompilationDto;
-import ru.practicum.dto.UpdateCompilationRequest;
+import ru.practicum.compilation.dto.CompilationDto;
+import ru.practicum.compilation.dto.NewCompilationDto;
+import ru.practicum.compilation.dto.UpdateCompilationRequest;
+import ru.practicum.event.dto.EventShortDto;
 import ru.practicum.mapper.CompilationMapper;
+import ru.practicum.mapper.EventMapper;
 import ru.practicum.model.Compilation;
 import ru.practicum.model.Event;
 import ru.practicum.repository.CompilationRepository;
@@ -30,6 +32,7 @@ public class CompilationServiceImpl implements CompilationService {
     private final CompilationRepository repository;
     private final EventRepository eventRepository;
     private final CompilationMapper mapper;
+    private final EventMapper eventMapper;
 
     @Override
     public List<CompilationDto> findAll(Boolean pinned, Integer from, Integer size) {
@@ -45,7 +48,11 @@ public class CompilationServiceImpl implements CompilationService {
                 .map(compilation -> {
                     CompilationDto dto = mapper.toCompilationDto(compilation);
                     if (compilation.getEvents() != null) {
-                        dto.setEvents(mapper.toEventShortDtoCollection(compilation.getEvents()));
+                        dto.setEvents(
+                                compilation.getEvents().stream()
+                                        .map(eventMapper::toEventShortDto)
+                                        .collect(Collectors.toList())
+                        );
                     }
                     return dto;
                 })
@@ -60,9 +67,15 @@ public class CompilationServiceImpl implements CompilationService {
                     return new NotFoundException(String.format("Подборка с id=%d не найдена", compId));
                 });
         CompilationDto dto = mapper.toCompilationDto(compilation);
-        if (compilation.getEvents() != null) {
-            dto.setEvents(mapper.toEventShortDtoCollection(compilation.getEvents()));
+        if (compilation.getEvents() != null && !compilation.getEvents().isEmpty()) {
+            List<EventShortDto> eventDtos = compilation.getEvents().stream()
+                    .map(event -> eventMapper.toEventShortDto(event))
+                    .collect(Collectors.toList());
+            dto.setEvents(eventDtos);
+        } else {
+            dto.setEvents(Collections.emptyList());
         }
+
         return dto;
     }
 
@@ -91,8 +104,11 @@ public class CompilationServiceImpl implements CompilationService {
         }
 
         CompilationDto dto = mapper.toCompilationDto(repository.save(newCompilation));
-        if (newCompilation.getEvents() != null) {
-            dto.setEvents(mapper.toEventShortDtoCollection(newCompilation.getEvents()));
+        if (newCompilation.getEvents() != null && !newCompilation.getEvents().isEmpty()) {
+            List<EventShortDto> eventDtos = newCompilation.getEvents().stream()
+                    .map(event -> eventMapper.toEventShortDto(event))
+                    .collect(Collectors.toList());
+            dto.setEvents(eventDtos);
         } else {
             dto.setEvents(Collections.emptyList());
         }
@@ -129,8 +145,13 @@ public class CompilationServiceImpl implements CompilationService {
         }
         Compilation savedCompilation = repository.save(existedCompilation);
         CompilationDto dto = mapper.toCompilationDto(savedCompilation);
-        if (savedCompilation.getEvents() != null) {
-            dto.setEvents(mapper.toEventShortDtoCollection(savedCompilation.getEvents()));
+        if (savedCompilation.getEvents() != null && !savedCompilation.getEvents().isEmpty()) {
+            List<EventShortDto> eventDtos = savedCompilation.getEvents().stream()
+                    .map(event -> eventMapper.toEventShortDto(event))
+                    .collect(Collectors.toList());
+            dto.setEvents(eventDtos);
+        } else {
+            dto.setEvents(Collections.emptyList());
         }
         return dto;
     }

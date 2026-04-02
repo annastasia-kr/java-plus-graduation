@@ -3,14 +3,13 @@ package ru.practicum.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.dto.EventResult;
-import ru.practicum.dto.EventRequestStatusUpdateDto;
-import ru.practicum.dto.EventRequestStatusUpdateResult;
-import ru.practicum.dto.RequestDto;
-import ru.practicum.enums.RequestStatus;
+import ru.practicum.request.dto.EventRequestStatusUpdateDto;
+import ru.practicum.request.dto.EventRequestStatusUpdateResult;
+import ru.practicum.request.dto.RequestDto;
 import ru.practicum.service.RequestService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/requests")
@@ -20,25 +19,23 @@ public class InternalRequestController {
 
     private final RequestService requestService;
 
-    @GetMapping("/{eventId}/count")
-    public long countByEventIdAndStatus(@PathVariable Long eventId, RequestStatus status) {
-        return requestService.countByEventIdAndStatus(eventId, status);
-    }
 
     @GetMapping("/{eventId}")
     public List<RequestDto> getRequestsByEventId(@PathVariable Long eventId) {
         return requestService.getRequestsByEventId(eventId);
     }
 
-    @GetMapping("/count")
-    public List<EventResult> countByEventIdsAndStatus(@RequestParam List<Long> eventIds, RequestStatus status) {
-        return requestService.countByEventIdsAndStatus(eventIds, status);
-    }
+    @PatchMapping("api/v1/requests/user/{userId}/event/{eventId}/status")
+    EventRequestStatusUpdateResult updateRequestStatus(@PathVariable Long userId,
+                                                       @PathVariable Long eventId,
+                                                       @RequestBody EventRequestStatusUpdateDto eventRequestStatusUpdateDto) {
 
-    @PatchMapping("/user/{userId}/event/{eventId}")
-    public EventRequestStatusUpdateResult updateRequestStatus(@PathVariable Long userId, Long eventId,
-                                                       EventRequestStatusUpdateDto eventRequestStatusUpdateDto) {
         return requestService.updateRequestStatus(userId, eventId, eventRequestStatusUpdateDto);
     }
 
+    @GetMapping("/confirmed/count")
+    public Map<Long, Long> countByEventIdsAndStatus(@RequestParam("eventIds") List<Long> eventIds) {
+        return requestService.countRequestsForEvents(eventIds);
+    }
 }
+

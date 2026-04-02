@@ -4,14 +4,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValueMappingStrategy;
-import ru.practicum.dto.EventDto;
-import ru.practicum.dto.EventShortDto;
-import ru.practicum.dto.NewEventDto;
-import ru.practicum.enums.StateEvent;
+import ru.practicum.event.dto.EventDto;
+import ru.practicum.event.dto.EventShortDto;
+import ru.practicum.event.dto.NewEventDto;
+import ru.practicum.event.enums.StateEvent;
 import ru.practicum.model.Category;
 import ru.practicum.model.Event;
 import ru.practicum.model.Location;
-import ru.practicum.dto.UserDto;
+import ru.practicum.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 
@@ -37,11 +37,11 @@ public interface EventMapper {
     @Mapping(source = "event.location", target = "location")
     @Mapping(source = "confirmedRequests", target = "confirmedRequests")
     @Mapping(source = "views", target = "views")
+    @Mapping(target = "initiator", ignore = true)
     EventDto toEventDto(Event event, Long confirmedRequests, Long views);
 
     @Mapping(source = "category", target = "category")
     @Mapping(source = "confirmedRequests", target = "confirmedRequests")
-    @Mapping(source = "initiator", target = "initiator")
     @Mapping(source = "id", target = "id")
     @Mapping(source = "annotation", target = "annotation")
     @Mapping(source = "title", target = "title")
@@ -49,6 +49,7 @@ public interface EventMapper {
     @Mapping(source = "paid", target = "paid")
     @Mapping(source = "participantLimit", target = "participantLimit")
     @Mapping(target = "views", constant = "0L")
+    @Mapping(target = "initiator", ignore = true)
     EventShortDto toEventShortDto(Event event);
 
 }

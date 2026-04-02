@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.enums.Sort;
-import ru.practicum.dto.EventDto;
+import ru.practicum.event.dto.EventDto;
+import ru.practicum.event.enums.Sort;
 import ru.practicum.service.event.EventService;
 
 import java.time.LocalDateTime;

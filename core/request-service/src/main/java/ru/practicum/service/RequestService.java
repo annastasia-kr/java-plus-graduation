@@ -1,12 +1,11 @@
 package ru.practicum.service;
 
-import ru.practicum.dto.EventResult;
-import ru.practicum.dto.EventRequestStatusUpdateDto;
-import ru.practicum.dto.EventRequestStatusUpdateResult;
-import ru.practicum.enums.RequestStatus;
-import ru.practicum.dto.RequestDto;
+import ru.practicum.request.dto.EventRequestStatusUpdateDto;
+import ru.practicum.request.dto.EventRequestStatusUpdateResult;
+import ru.practicum.request.dto.RequestDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RequestService {
 
@@ -16,11 +15,11 @@ public interface RequestService {
 
     RequestDto cancelRequest(Long userId, Long requestId);
 
-    long countByEventIdAndStatus(Long eventId, RequestStatus status);
-
     List<RequestDto> getRequestsByEventId(Long eventId);
 
-    List<EventResult> countByEventIdsAndStatus(List<Long> eventIds, RequestStatus status);
-
     EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateDto eventRequestStatusUpdateDto);
+
+    List<RequestDto> findAllByEventId(Long id);
+
+    Map<Long, Long> countRequestsForEvents(List<Long> longs);
 }

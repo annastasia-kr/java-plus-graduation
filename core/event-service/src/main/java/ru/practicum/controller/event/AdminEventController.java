@@ -1,16 +1,15 @@
 package ru.practicum.controller.event;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.enums.StateEvent;
-import ru.practicum.dto.EventDto;
-import ru.practicum.dto.UpdateEventDtoAdminRequest;
+import ru.practicum.event.enums.StateEvent;
+import ru.practicum.event.dto.UpdateEventDtoAdminRequest;
+import ru.practicum.event.dto.EventDto;
 import ru.practicum.service.event.EventService;
 
 import java.time.LocalDateTime;
