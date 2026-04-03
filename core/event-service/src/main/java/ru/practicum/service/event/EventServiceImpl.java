@@ -188,7 +188,14 @@ public class EventServiceImpl implements EventService {
             throw new IllegalStateException("Application confirmation is not required");
         }
 
-        return requestClient.updateRequestStatus(userId, eventId, eventRequestStatusUpdateDto);
+        try {
+            EventRequestStatusUpdateResult eventRequestStatusUpdateResult =
+                    requestClient.updateRequestStatus(userId, eventId, eventRequestStatusUpdateDto);
+            return eventRequestStatusUpdateResult;
+        } catch (FeignException.Conflict e) {
+            throw new DataConflictException(e.getMessage());
+        }
+
     }
 
     @Override
