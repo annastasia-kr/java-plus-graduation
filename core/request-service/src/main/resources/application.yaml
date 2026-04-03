@@ -15,9 +15,9 @@ spring:
         useRandomPolicy: true
         # максимальный интервал в течении которого делаем попытки (6000 миллисекунд = 6 сек)
         max-interval: 6000
-    discovery:
-      enabled: true
-      serviceId: config-server
+      discovery:
+        enabled: true
+        serviceId: config-server
     openfeign:
       okhttp:
         enabled: true
