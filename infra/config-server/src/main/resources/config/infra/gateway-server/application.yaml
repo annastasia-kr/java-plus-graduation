@@ -30,12 +30,9 @@ management:
     web:
       exposure:
         include: "*"
-      base-path: /actuator
   endpoint:
     gateway:
       enabled: true
-      routes:
-        enabled: true
 
 logging:
   level:
