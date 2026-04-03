@@ -125,17 +125,19 @@ public class RequestServiceImpl implements RequestService {
                 .anyMatch(request -> !request.getStatus().equals(RequestStatus.PENDING))) {
             throw new DataConflictException("Applications must be in status \"PENDING\"");
         }
-
+        log.warn("UPDATE REQUEST STATUS " + event.getParticipantLimit() + " " + requestsToStatusUpdate.size());
         List<Request> confirmedRequests = new ArrayList<>();
         List<Request> rejectedRequests = new ArrayList<>();
         RequestStatus updateStatus = eventRequestStatusUpdateDto.getStatus();
 
         // Проверяем, не превысит ли подтверждение лимит участников
         if (updateStatus == RequestStatus.CONFIRMED) {
+            log.warn("updateStatus " + RequestStatus.CONFIRMED);
             Long confirmedRequestsCount = requestRepository.findAllByEventId(eventId)
                     .stream()
                     .filter(e -> e.getStatus().equals(RequestStatus.CONFIRMED))
                     .count();
+            log.warn("confirmedRequestsCount " + confirmedRequestsCount);
             if (confirmedRequestsCount + requestsToStatusUpdate.size() > event.getParticipantLimit()) {
                 throw new DataConflictException("Application limit exceeded - confirmation not allowed");
             }
