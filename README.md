@@ -58,12 +58,3 @@
 * **Управление запросами** — подача заявок на участие, подтверждение/отклонение заявок.
 * **Управление подборками** — создание подборок событий, добавление/удаление событий.
 * **Статистика просмотров** — отслеживание количества просмотров событий.
-* **Система комментариев** — создание, редактирование, модерация комментариев.
-
-### Основные эндпоинты
-
-Все запросы выполняются через Gateway Server (`http://localhost:8080`):
-
-- **Публичный API:** `/events`, `/categories`, `/compilations`, `/events/{eventId}/comments`
-- **Приватный API:** `/users/{userId}/events`, `/users/{userId}/requests`, `/users/{userId}/comments`
-- **Административный API:** `/admin/users`, `/admin/categories`, `/admin/events`, `/admin/compilations`, `/admin/comments`, `/admin/requests`

@@ -194,6 +194,8 @@ public class EventServiceImpl implements EventService {
             return eventRequestStatusUpdateResult;
         } catch (FeignException.Conflict e) {
             throw new DataConflictException(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException("Runtime exception");
         }
 
     }

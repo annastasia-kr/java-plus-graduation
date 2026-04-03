@@ -150,7 +150,7 @@ public class RequestServiceImpl implements RequestService {
                     .filter(e -> e.getStatus().equals(RequestStatus.CONFIRMED))
                     .count();
             log.warn("confirmedRequestsCount " + confirmedRequestsCount);
-            if (confirmedRequestsCount + requestsToStatusUpdate.size() > event.getConfirmedRequests()) {
+            if (confirmedRequestsCount + requestsToStatusUpdate.size() > event.getParticipantLimit()) {
                 throw new DataConflictException("Application limit exceeded - confirmation not allowed");
             }
         }
@@ -243,6 +243,7 @@ public class RequestServiceImpl implements RequestService {
             }
         }
     }
+
 
     private Optional<UserDto> findUserById(Long userId) {
         Optional<UserDto> user = userClient.getUserById(userId);
