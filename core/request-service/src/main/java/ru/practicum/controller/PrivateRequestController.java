@@ -1,6 +1,7 @@
 package ru.practicum.controller;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,8 +31,8 @@ public class PrivateRequestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RequestDto create(
-            @PathVariable Long userId,
-            @RequestParam Long eventId) {
+            @PathVariable @NotNull @PositiveOrZero Long userId,
+            @RequestParam @NotNull @PositiveOrZero Long eventId) {
         log.info("POST /users/{}/requests - создание запроса на участие в событии {}", userId, eventId);
         return service.create(userId, eventId);
     }
