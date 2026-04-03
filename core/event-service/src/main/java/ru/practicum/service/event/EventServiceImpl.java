@@ -177,6 +177,8 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId,
                                                               EventRequestStatusUpdateDto eventRequestStatusUpdateDto) {
+        findUserById(userId).orElseThrow(
+                () -> new NotFoundException("User not found"));
         Event event = eventRepository.findById(eventId).orElseThrow(
                 () -> new NotFoundException("Event not found"));
         if (!event.getInitiator().equals(userId)) {

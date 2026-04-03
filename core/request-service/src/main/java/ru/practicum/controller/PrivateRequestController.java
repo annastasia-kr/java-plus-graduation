@@ -30,7 +30,7 @@ public class PrivateRequestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RequestDto create(
-            @PathVariable Long userId,
+            @PathVariable @NotNull Long userId,
             @RequestParam @NotNull Long eventId) {
         log.info("POST /users/{}/requests - создание запроса на участие в событии {}", userId, eventId);
         return service.create(userId, eventId);
