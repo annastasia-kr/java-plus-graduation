@@ -60,26 +60,6 @@ public class RequestServiceImpl implements RequestService {
 
         validateRequestCreation(userId, event);
 
-        if (requestRepository.existsByEventIdAndRequesterId(eventId, userId)) {
-            throw new ConflictException("Запрос на участие уже существует");
-        }
-        if (event.getState() != StateEvent.PUBLISHED) {
-            throw new ConflictException("Событие неопебликовано! Пользователь не может подать заявку.");
-        }
-
-        if (event.getInitiator().equals(userId)) {
-            throw new ConflictException("Пользователь не может подавать заявку на собственное событие");
-        }
-
-        if (event.getParticipantLimit() != 0) {
-            Long confirmedRequestsCount = requestRepository.findAllByEventId(eventId)
-                    .stream()
-                    .filter(e -> e.getStatus().equals(RequestStatus.CONFIRMED))
-                    .count();
-            if (confirmedRequestsCount >= event.getParticipantLimit()) {
-                throw new ConflictException("Лимит участников для события достигнут.");
-            }
-        }
 
         // Создаем запрос и сразу устанавливаем дату создания
         Request request = new Request();
@@ -114,6 +94,10 @@ public class RequestServiceImpl implements RequestService {
             throw new ConflictException("Запрос не принадлежит пользователю");
         }
 
+        if (request.getStatus() == RequestStatus.CONFIRMED) {
+            throw new ConflictException("Невозможно отменить подтвержденный запрос.");
+        }
+
         request.setStatus(RequestStatus.CANCELED);
         Request updatedRequest = requestRepository.save(request);
         log.info("Запрос на участие с ID {} отменен", requestId);
@@ -131,10 +115,21 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateDto eventRequestStatusUpdateDto) {
+    @Transactional
+    public EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId,
+                                                              EventRequestStatusUpdateDto eventRequestStatusUpdateDto) {
 
         EventDto event = findEventById(eventId).orElseThrow(() ->
                 new NotFoundException("Event (id = " + eventId + " not found"));
+
+        if (!event.getInitiator().equals(userId)) {
+            throw new ConflictException("Обновляет только инициатор");
+        }
+
+        if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
+            log.warn("Событие id={} не требует модерации заявок или не имеет лимита.", eventId);
+            return new EventRequestStatusUpdateResult(List.of(), List.of());
+        }
 
         List<Request> requestsToStatusUpdate = requestRepository
                 .findAllByIdIn(eventRequestStatusUpdateDto.getRequestIds());
@@ -227,6 +222,9 @@ public class RequestServiceImpl implements RequestService {
     }
 
     private void validateRequestCreation(Long userId, EventDto event) {
+        if (requestRepository.existsByEventIdAndRequesterId(event.getId(), userId)) {
+            throw new ConflictException("Запрос на участие уже существует");
+        }
         // Проверяем, что инициатор не подает заявку на свое же событие
         if (event.getInitiator().equals(userId)) {
             throw new ConflictException("Инициатор события не может подать заявку на участие");
