@@ -9,6 +9,7 @@ import ru.practicum.request.dto.RequestDto;
 import ru.practicum.request.enums.RequestStatus;
 
 import java.util.List;
+import java.util.Map;
 
 @FeignClient(name = "request-service", path = "api/v1/requests")
 public interface RequestClient {
@@ -22,7 +23,7 @@ public interface RequestClient {
                                                        @RequestBody EventRequestStatusUpdateDto eventRequestStatusUpdateDto);
 
     @GetMapping("/confirmed/count")
-    List<EventResult> countRequestsForEvents(@RequestParam("eventIds") List<Long> eventIds,
-                                             @RequestParam RequestStatus requestStatus);
+    Map<Long, Long> countByEventIdsAndStatusMap(@RequestParam("eventIds") List<Long> eventIds,
+                                    @RequestParam RequestStatus requestStatus);
 }
 

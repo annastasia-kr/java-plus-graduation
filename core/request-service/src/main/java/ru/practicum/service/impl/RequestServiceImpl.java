@@ -203,6 +203,11 @@ public class RequestServiceImpl implements RequestService {
         return requestRepository.countByEventIdsAndStatus(eventIds, requestStatus);
     }
 
+    @Override
+    public Map<Long, Long> countByEventIdsAndStatusMap(List<Long> eventIds, RequestStatus requestStatus) {
+        return requestRepository.countByEventIdsAndStatusMap(eventIds, requestStatus);
+    }
+
     private void validateRequestCreation(Long userId, EventDto event) {
         // Проверяем, что инициатор не подает заявку на свое же событие
         if (event.getInitiator().equals(userId)) {

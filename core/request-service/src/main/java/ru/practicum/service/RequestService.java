@@ -26,4 +26,6 @@ public interface RequestService {
     Map<Long, Long> countRequestsForEvents(List<Long> longs);
 
     List<EventResult> countRequestsForEvents(List<Long> eventIds, RequestStatus requestStatus);
+
+    Map<Long, Long> countByEventIdsAndStatusMap(List<Long> eventIds, RequestStatus requestStatus);
 }

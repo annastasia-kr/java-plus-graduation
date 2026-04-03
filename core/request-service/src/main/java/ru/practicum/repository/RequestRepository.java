@@ -8,6 +8,7 @@ import ru.practicum.model.Request;
 import ru.practicum.request.enums.RequestStatus;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public interface RequestRepository extends JpaRepository<Request, Long> {
@@ -35,4 +36,12 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             @Param("status") RequestStatus status
     );
 
+    default Map<Long, Long> countByEventIdsAndStatusMap(List<Long> eventIds, RequestStatus status) {
+        if (eventIds.isEmpty() || Objects.isNull(eventIds) || Objects.isNull(status)) {
+            return Collections.emptyMap();
+        }
+        return countByEventIdsAndStatus(eventIds, status)
+                .stream()
+                .collect(Collectors.toMap(eventResult -> eventResult.eventId(), eventResult -> eventResult.count()));
+    }
 }
