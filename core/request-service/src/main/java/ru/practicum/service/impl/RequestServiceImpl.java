@@ -66,8 +66,8 @@ public class RequestServiceImpl implements RequestService {
 
         // Создаем запрос и сразу устанавливаем дату создания
         Request request = new Request();
-        request.setEventId(event.getId());
-        request.setRequesterId(user.getId());
+        request.setEventId(eventId);
+        request.setRequesterId(userId);
         request.setStatus(RequestStatus.PENDING);
         request.setCreatedDate(LocalDateTime.now());
 
