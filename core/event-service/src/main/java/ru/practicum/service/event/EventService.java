@@ -15,11 +15,12 @@ import java.util.Optional;
 
 public interface EventService {
 
-    Collection<EventShortDto> getEventsByUserId(Long userId, Integer from, Integer size);
+    Collection<EventShortDto> getEventsByUserId(Long userId, Integer from, Integer size,
+                                                HttpServletRequest httpServletRequest);
 
     EventDto createEvent(Long userId, NewEventDto newEventDto);
 
-    EventDto getEventById(Long userId, Long eventId);
+    EventDto getEventById(Long userId, Long eventId, HttpServletRequest httpServletRequest);
 
     EventDto updateEventByUser(Long userId, Long eventId, UpdateEventDtoUserRequest updateEventDtoUserRequest);
 

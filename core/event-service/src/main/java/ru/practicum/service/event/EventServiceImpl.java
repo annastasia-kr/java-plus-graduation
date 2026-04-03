@@ -62,11 +62,13 @@ public class EventServiceImpl implements EventService {
     private final RequestClient requestClient;
 
     @Override
-    public Collection<EventShortDto> getEventsByUserId(Long userId, Integer from, Integer size) {
+    public Collection<EventShortDto> getEventsByUserId(Long userId, Integer from, Integer size,
+                                                       HttpServletRequest httpServletRequest) {
         findUserById(userId).orElseThrow(
                 () -> new NotFoundException("User not found"));
 
         Pageable page = PageRequest.of(from / size, size);
+        statsClient.saveHit(httpServletRequest);
         return eventRepository.findAllByInitiator(userId, page).stream()
                 .map(eventMapper::toEventShortDto)
                 .toList();
@@ -89,7 +91,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDto getEventById(Long userId, Long eventId) {
+    public EventDto getEventById(Long userId, Long eventId, HttpServletRequest httpServletRequest) {
         findUserById(userId).orElseThrow(
                 () -> new NotFoundException("User not found"));
         Event event = eventRepository.findById(eventId).orElseThrow(
@@ -98,7 +100,7 @@ public class EventServiceImpl implements EventService {
                 .stream()
                 .filter(e -> e.getStatus().equals(RequestStatus.CONFIRMED))
                 .count();
-
+        statsClient.saveHit(httpServletRequest);
         return eventMapper.toEventDto(event, confirmedRequests, 0L);
 
     }
@@ -403,6 +405,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventDto> getEvents(List<Long> eventIds) {
+
         return eventRepository.findAllById(eventIds).stream()
                 .map(event -> {
                     // Получаем количество подтверждённых запросов для текущего события
