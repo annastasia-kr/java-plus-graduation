@@ -50,7 +50,7 @@ public interface EventMapper {
     @Mapping(source = "paid", target = "paid")
     @Mapping(source = "participantLimit", target = "participantLimit")
     @Mapping(target = "views", constant = "0L")
-    @Mapping(source = "event.initiator", target = "initiator")
+    @Mapping(source = "initiator", target = "initiator")
     EventShortDto toEventShortDto(Event event);
 
 }

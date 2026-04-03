@@ -218,7 +218,7 @@ public class EventServiceImpl implements EventService {
         typedQuery.setMaxResults(size);
 
         List<Event> events = typedQuery.getResultList();
-
+        log.error("!!!Size: " + events.size());
         if (events.isEmpty()) {
             return List.of();
         }
@@ -226,7 +226,10 @@ public class EventServiceImpl implements EventService {
         List<Long> eventIds = events.stream()
                 .map(Event::getId)
                 .toList();
-
+        log.error("!!!eventIds Size: " + eventIds.size());
+        for (Long l : eventIds) {
+            log.error("!!!l: " + l);
+        }
         Map<Long, Long> confirmedRequestsMap = requestClient
                 .countByEventIdsAndStatusMap(eventIds, RequestStatus.CONFIRMED);
         for (Map.Entry<Long, Long> entry : confirmedRequestsMap.entrySet()) {
@@ -234,9 +237,10 @@ public class EventServiceImpl implements EventService {
         }
         return events.stream()
                 .map(event -> {
-                    Long confirmedRequests = (confirmedRequestsMap != null)
+                    Long confirmedRequests = confirmedRequestsMap != null
                             ? confirmedRequestsMap.getOrDefault(event.getId(), 0L)
                             : 0L;
+                    log.error("!!!Long confirmedRequests: " + confirmedRequests);
                     return eventMapper.toEventDto(event, confirmedRequests, 0L);
                 })
                 .toList();
