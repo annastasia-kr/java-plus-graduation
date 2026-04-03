@@ -63,6 +63,23 @@ public class RequestServiceImpl implements RequestService {
         if (requestRepository.existsByEventIdAndRequesterId(eventId, userId)) {
             throw new ConflictException("Запрос на участие уже существует");
         }
+        if (event.getState() != StateEvent.PUBLISHED) {
+            throw new ConflictException("Событие неопебликовано! Пользователь не может подать заявку.");
+        }
+
+        if (event.getInitiator().equals(userId)) {
+            throw new ConflictException("Пользователь не может подавать заявку на собственное событие");
+        }
+
+        if (event.getParticipantLimit() != 0) {
+            Long confirmedRequestsCount = requestRepository.findAllByEventId(eventId)
+                    .stream()
+                    .filter(e -> e.getStatus().equals(RequestStatus.CONFIRMED))
+                    .count();
+            if (confirmedRequestsCount >= event.getParticipantLimit()) {
+                throw new ConflictException("Лимит участников для события достигнут.");
+            }
+        }
 
         // Создаем запрос и сразу устанавливаем дату создания
         Request request = new Request();
