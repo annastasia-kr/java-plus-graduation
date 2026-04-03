@@ -27,7 +27,7 @@ public class InternalRequestController {
     }
 
     @PatchMapping("/user/{userId}/event/{eventId}/status")
-    EventRequestStatusUpdateResult updateRequestStatus(@PathVariable Long userId,
+    public EventRequestStatusUpdateResult updateRequestStatus(@PathVariable Long userId,
                                                        @PathVariable Long eventId,
                                                        @RequestBody EventRequestStatusUpdateDto eventRequestStatusUpdateDto) {
 
