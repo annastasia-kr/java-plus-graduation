@@ -27,21 +27,18 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             "WHERE r.eventId = :eventId AND r.status = ru.practicum.request.enums.RequestStatus.CONFIRMED")
     Long countConfirmedRequests(@Param("eventId") Long eventId);
 
-    @Query("SELECT r.eventId AS eventId, COUNT(r.id) AS count FROM Request r " +
-            "WHERE r.eventId IN :eventIds " +
-            "AND r.status = :status " +
+    @Query("SELECT new ru.practicum.event.dto.EventResult(r.eventId, COUNT(r.id)) " +
+            "FROM Request r " +
+            "WHERE r.eventId IN :eventIds AND r.status = :status " +
             "GROUP BY r.eventId")
-    List<EventResult> countByEventIdsAndStatus(
-            @Param("eventIds") List<Long> eventIds,
-            @Param("status") RequestStatus status
-    );
-
+    List<EventResult> countByEventIdsAndStatus(@Param("eventIds") List<Long> eventIds,
+                                               @Param("status") RequestStatus status);
     default Map<Long, Long> countByEventIdsAndStatusMap(List<Long> eventIds, RequestStatus status) {
         if (eventIds.isEmpty() || Objects.isNull(eventIds) || Objects.isNull(status)) {
             return Collections.emptyMap();
         }
         return countByEventIdsAndStatus(eventIds, status)
                 .stream()
-                .collect(Collectors.toMap(eventResult -> eventResult.eventId(), eventResult -> eventResult.count()));
+                .collect(Collectors.toMap(eventResult -> eventResult.getEventId(), eventResult -> eventResult.getCount()));
     }
 }

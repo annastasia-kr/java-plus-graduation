@@ -26,4 +26,3 @@ public interface RequestClient {
     Map<Long, Long> countByEventIdsAndStatusMap(@RequestParam("eventIds") List<Long> eventIds,
                                     @RequestParam RequestStatus requestStatus);
 }
-
