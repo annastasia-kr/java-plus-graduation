@@ -31,14 +31,14 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             "FROM Request r " +
             "WHERE r.eventId IN :eventIds AND r.status = :status " +
             "GROUP BY r.eventId")
-    List<EventResult> countByEventIdsAndStatus(@Param("eventIds") Set<Long> eventIds,
+    List<EventResult> countByEventIdsAndStatus(@Param("eventIds") List<Long> eventIds,
                                                @Param("status") RequestStatus status);
     default Map<Long, Long> countByEventIdsAndStatusMap(List<Long> eventIds, RequestStatus status) {
         if (Objects.isNull(eventIds) || eventIds.isEmpty() || Objects.isNull(status)) {
             return Collections.emptyMap();
         }
-        Set<Long> idsSet = new HashSet<>(eventIds);
-        return countByEventIdsAndStatus(idsSet, status)
+        List<Long> uniqueEventIds = new ArrayList<>(new HashSet<>(eventIds));
+        return countByEventIdsAndStatus(uniqueEventIds, status)
                 .stream()
                 .collect(Collectors.toMap(eventResult -> eventResult.getEventId(), eventResult -> eventResult.getCount()));
     }
