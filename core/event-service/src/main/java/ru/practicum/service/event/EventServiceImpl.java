@@ -229,8 +229,8 @@ public class EventServiceImpl implements EventService {
                 .countRequestsForEvents(eventIds, RequestStatus.CONFIRMED)
                 .stream()
                 .collect(Collectors.toMap(
-                        EventResult::getEventId,
-                        EventResult::getCount));
+                        EventResult::eventId,
+                        EventResult::count));
 
         return events.stream()
                 .map(event -> {
@@ -355,8 +355,8 @@ public class EventServiceImpl implements EventService {
         Map<Long, Long> confirmedRequestsMap = requestClient.countRequestsForEvents(eventIds, RequestStatus.CONFIRMED)
                 .stream()
                 .collect(Collectors.toMap(
-                        EventResult::getEventId,
-                        EventResult::getCount));
+                        EventResult::eventId,
+                        EventResult::count));
 
         LocalDateTime minStartDate = events.stream()
                 .map(Event::getPublishedOn)

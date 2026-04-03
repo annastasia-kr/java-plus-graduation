@@ -26,7 +26,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             "WHERE r.eventId = :eventId AND r.status = ru.practicum.request.enums.RequestStatus.CONFIRMED")
     Long countConfirmedRequests(@Param("eventId") Long eventId);
 
-    @Query("SELECT r.eventId AS eventId, COUNT(r) AS count FROM Request r " +
+    @Query("SELECT r.eventId AS eventId, COUNT(r.id) AS count FROM Request r " +
             "WHERE r.eventId IN :eventIds " +
             "AND r.status = :status " +
             "GROUP BY r.eventId")

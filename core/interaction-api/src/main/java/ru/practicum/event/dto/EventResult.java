@@ -1,7 +1,11 @@
 package ru.practicum.event.dto;
 
-public interface EventResult {
-    Long getEventId();
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-    Long getCount();
+@Getter
+@Setter
+@AllArgsConstructor
+public record EventResult(Long eventId, Long count) {
 }

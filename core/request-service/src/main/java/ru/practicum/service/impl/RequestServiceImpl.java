@@ -194,8 +194,8 @@ public class RequestServiceImpl implements RequestService {
                 .countByEventIdsAndStatus(eventIds, RequestStatus.CONFIRMED)
                 .stream()
                 .collect(Collectors.toMap(
-                        EventResult::getEventId,
-                        EventResult::getCount));
+                        EventResult::eventId,
+                        EventResult::count));
     }
 
     @Override
