@@ -23,13 +23,11 @@ public class PublicCompilationController {
     public List<CompilationDto> findAll(@RequestParam(required = false) Boolean pinned,
                                         @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
                                         @RequestParam(defaultValue = "10") @Positive Integer size) {
-        log.trace("PublicCompilationController findAll");
         return service.findAll(pinned, from, size);
     }
 
     @GetMapping("/{compId}")
     public CompilationDto findById(@PathVariable @NotNull Long compId) {
-        log.trace("PublicCompilationController findById {}", compId);
         return service.findById(compId);
     }
 }

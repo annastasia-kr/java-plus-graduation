@@ -14,7 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.client.impl.StatsClient;
+import ru.practicum.client.StatsClient;
 import ru.practicum.StatsDto;
 import ru.practicum.event.enums.StateActionAdmin;
 import ru.practicum.event.enums.StateActionUser;
@@ -227,7 +227,7 @@ public class EventServiceImpl implements EventService {
         typedQuery.setMaxResults(size);
 
         List<Event> events = typedQuery.getResultList();
-        log.error("!!!Size: " + events.size());
+
         if (events.isEmpty()) {
             return List.of();
         }
@@ -235,22 +235,15 @@ public class EventServiceImpl implements EventService {
         List<Long> eventIds = events.stream()
                 .map(Event::getId)
                 .toList();
-        log.error("!!!eventIds Size: " + eventIds.size());
-        for (Long l : eventIds) {
-            log.error("!!!l: " + l);
-        }
+
         Map<Long, Long> confirmedRequestsMap = requestClient
                 .countByEventIdsAndStatusMap(eventIds, RequestStatus.CONFIRMED);
-        for (Map.Entry<Long, Long> entry : confirmedRequestsMap.entrySet()) {
-            log.error("!!!Event ID: " + entry.getKey() + ", Confirmed requests: " + entry.getValue());
-        }
+
         return events.stream()
                 .map(event -> {
                     Long confirmedRequests = confirmedRequestsMap != null
                             ? confirmedRequestsMap.getOrDefault(event.getId(), 0L)
                             : 0L;
-                    log.error("!!!Long confirmedRequests: " + confirmedRequests);
-                    log.error("!!!event: " + event.getId());
                     return eventMapper.toEventDto(event, confirmedRequests, 0L);
                 })
                 .toList();
@@ -318,7 +311,7 @@ public class EventServiceImpl implements EventService {
                     .count();
             return eventMapper.toEventDto(eventRepository.save(event), confirmedRequests, 0L);
         } catch (FeignException e) {
-            throw new ConflictException("FException " + e.getMessage());
+            throw new ConflictException("Feign conflict exception: " + e.getMessage());
         }
     }
 
@@ -511,7 +504,6 @@ public class EventServiceImpl implements EventService {
     }
 
     private Long getEventViews(LocalDateTime createdOn, Long eventId) {
-        log.warn("Method getEventViews {} {}, ", createdOn, eventId);
         List<StatsDto> stat = statsClient.getStats(createdOn, LocalDateTime.now(),
                 List.of(URI + eventId), true);
         if (stat.isEmpty()) {
