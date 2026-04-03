@@ -1,4 +1,4 @@
-package ru.practicum.client.impl;
+package ru.practicum.client;
 
 import ru.practicum.StatsDto;
 

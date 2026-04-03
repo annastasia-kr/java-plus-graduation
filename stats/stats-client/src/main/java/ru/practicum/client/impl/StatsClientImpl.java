@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.practicum.StatsDto;
+import ru.practicum.client.StatsClient;
 import ru.practicum.exception.StatsServerUnavailable;
 
 import java.net.URI;
