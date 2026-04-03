@@ -39,6 +39,7 @@ public interface EventMapper {
     @Mapping(source = "views", target = "views")
     @Mapping(source = "event.initiator", target = "initiator")
     @Mapping(source = "event.participantLimit", target = "participantLimit")
+    @Mapping(source = "event.id", target = "id")
     EventDto toEventDto(Event event, Long confirmedRequests, Long views);
 
     @Mapping(source = "category", target = "category")

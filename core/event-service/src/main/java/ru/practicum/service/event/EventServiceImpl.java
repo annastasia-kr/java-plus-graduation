@@ -241,6 +241,7 @@ public class EventServiceImpl implements EventService {
                             ? confirmedRequestsMap.getOrDefault(event.getId(), 0L)
                             : 0L;
                     log.error("!!!Long confirmedRequests: " + confirmedRequests);
+                    log.error("!!!event: " + event.getId());
                     return eventMapper.toEventDto(event, confirmedRequests, 0L);
                 })
                 .toList();
