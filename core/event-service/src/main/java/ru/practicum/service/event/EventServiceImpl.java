@@ -229,7 +229,9 @@ public class EventServiceImpl implements EventService {
 
         Map<Long, Long> confirmedRequestsMap = requestClient
                 .countByEventIdsAndStatusMap(eventIds, RequestStatus.CONFIRMED);
-
+        for (Map.Entry<Long, Long> entry : confirmedRequestsMap.entrySet()) {
+            log.error("!!!Event ID: " + entry.getKey() + ", Confirmed requests: " + entry.getValue());
+        }
         return events.stream()
                 .map(event -> {
                     Long confirmedRequests = (confirmedRequestsMap != null)
