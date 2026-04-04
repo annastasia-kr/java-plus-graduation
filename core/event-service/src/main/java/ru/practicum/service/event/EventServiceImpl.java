@@ -14,8 +14,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.client.impl.StatsClient;
+import ru.practicum.HitDto;
 import ru.practicum.StatsDto;
+import ru.practicum.client.StatsClient;
 import ru.practicum.event.enums.StateActionAdmin;
 import ru.practicum.event.enums.StateActionUser;
 import ru.practicum.exception.*;
@@ -50,6 +51,7 @@ import java.util.stream.Collectors;
 public class EventServiceImpl implements EventService {
 
     private static final String URI = "/events/";
+    private static final String APP = "main-service";
 
     private final EventRepository eventRepository;
     private final UserClient userClient;
@@ -350,7 +352,8 @@ public class EventServiceImpl implements EventService {
 
         List<Event> events = typedQuery.getResultList();
 
-        statsClient.saveHit(httpServletRequest);
+        statsClient.saveHit(new HitDto(null, APP, httpServletRequest.getRequestURI(), httpServletRequest.getRemoteAddr(),
+                LocalDateTime.now()));
 
         if (events.isEmpty()) {
             return List.of();
@@ -431,7 +434,8 @@ public class EventServiceImpl implements EventService {
         if (!event.getState().equals(StateEvent.PUBLISHED)) {
             throw new NotFoundException("Event must be published");
         }
-        statsClient.saveHit(httpServletRequest);
+        statsClient.saveHit(new HitDto(null, APP, httpServletRequest.getRequestURI(), httpServletRequest.getRemoteAddr(),
+                LocalDateTime.now()));
 
         LocalDateTime start = event.getPublishedOn() == null ? event.getCreatedOn() : event.getPublishedOn();
 
