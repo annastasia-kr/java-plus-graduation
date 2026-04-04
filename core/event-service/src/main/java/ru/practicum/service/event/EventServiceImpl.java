@@ -14,7 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.client.StatsClient;
+import ru.practicum.client.impl.StatsClient;
 import ru.practicum.StatsDto;
 import ru.practicum.event.enums.StateActionAdmin;
 import ru.practicum.event.enums.StateActionUser;

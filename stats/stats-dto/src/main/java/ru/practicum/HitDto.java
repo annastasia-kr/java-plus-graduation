@@ -8,6 +8,8 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class HitDto {
 
     private Long id;

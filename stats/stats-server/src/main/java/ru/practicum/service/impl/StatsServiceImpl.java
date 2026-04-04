@@ -37,8 +37,6 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     public Collection<StatsDto> get(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
-        if (start == null || end == null)
-            throw new ValidationException("The start date and end date must be not null.");
         if (start.isAfter(end))
             throw new ValidationException("The start date must be earlier than the end date.");
 
