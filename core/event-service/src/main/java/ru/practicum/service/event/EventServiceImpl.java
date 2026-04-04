@@ -419,10 +419,10 @@ public class EventServiceImpl implements EventService {
 
                     // Получаем просмотры для текущего события
                     // Здесь нужно подставить корректные значения для start и end
-                    Long views = getEventViews(start, event.getId());
+                    //Long views = getEventViews(start, event.getId(), );
 
                     // Преобразуем сущность в DTO, передавая дополнительные данные
-                    return eventMapper.toEventDto(event, confirmedRequests, views);
+                    return eventMapper.toEventDto(event, confirmedRequests, 0L);
                 })
                 .collect(Collectors.toList());
     }
@@ -444,7 +444,7 @@ public class EventServiceImpl implements EventService {
                 .stream()
                 .filter(e -> e.getStatus().equals(RequestStatus.CONFIRMED))
                 .count();
-        Long views = getEventViews(start, event.getId());
+        Long views = getEventViews(start, event.getId(), httpServletRequest);
         return eventMapper.toEventDto(event, confirmedRequests, views);
     }
 
@@ -509,9 +509,9 @@ public class EventServiceImpl implements EventService {
         }
     }
 
-    private Long getEventViews(LocalDateTime createdOn, Long eventId) {
-        List<StatsDto> stat = statsClient.getStats(createdOn, LocalDateTime.now(),
-                List.of(URI + eventId), true);
+    private Long getEventViews(LocalDateTime createdOn, Long eventId, HttpServletRequest httpServletRequest) {
+        List<StatsDto> stat = statsClient.getStats(createdOn, LocalDateTime.now().plusSeconds(1),
+                List.of(httpServletRequest.getRequestURI()), true);
         if (stat.isEmpty()) {
             return 0L;
         }
