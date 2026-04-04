@@ -434,8 +434,6 @@ public class EventServiceImpl implements EventService {
         if (!event.getState().equals(StateEvent.PUBLISHED)) {
             throw new NotFoundException("Event must be published");
         }
-        statsClient.saveHit(new HitDto(null, APP, httpServletRequest.getRequestURI(), httpServletRequest.getRemoteAddr(),
-                LocalDateTime.now()));
 
         LocalDateTime start = event.getPublishedOn() == null ? event.getCreatedOn() : event.getPublishedOn();
 
@@ -445,6 +443,9 @@ public class EventServiceImpl implements EventService {
                 .filter(e -> e.getStatus().equals(RequestStatus.CONFIRMED))
                 .count();
         Long views = getEventViews(start, event.getId(), httpServletRequest);
+
+        statsClient.saveHit(new HitDto(null, APP, httpServletRequest.getRequestURI(), httpServletRequest.getRemoteAddr(),
+                LocalDateTime.now().plusSeconds(1)));
         return eventMapper.toEventDto(event, confirmedRequests, views);
     }
 
