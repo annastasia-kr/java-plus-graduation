@@ -439,7 +439,8 @@ public class EventServiceImpl implements EventService {
 
         LocalDateTime start = event.getPublishedOn() == null ? event.getCreatedOn() : event.getPublishedOn();
 
-
+        statsClient.saveHit(new HitDto(APP, httpServletRequest.getRequestURI(), httpServletRequest.getRemoteAddr(),
+                LocalDateTime.now()));
         eventRepository.save(event);
         Long confirmedRequests = requestClient.findAllByEventId(eventId)
                 .stream()
@@ -450,8 +451,7 @@ public class EventServiceImpl implements EventService {
         log.warn("Event getRequestURI --- {}", httpServletRequest.getRequestURI());
         log.warn("Event getRemoteAddr --- {}", httpServletRequest.getRemoteAddr());
 
-        statsClient.saveHit(new HitDto(APP, httpServletRequest.getRequestURI(), httpServletRequest.getRemoteAddr(),
-                LocalDateTime.now()));
+
         return eventMapper.toEventDto(event, confirmedRequests, views);
     }
 

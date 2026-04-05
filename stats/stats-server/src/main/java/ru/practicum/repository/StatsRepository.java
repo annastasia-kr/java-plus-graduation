@@ -16,7 +16,7 @@ public interface StatsRepository extends JpaRepository<Hit, Long> {
         SELECT new ru.practicum.StatsDto(app, uri, COUNT(DISTINCT ip) AS hits)
         FROM Hit
         WHERE timestamp BETWEEN :start AND :end
-        AND (uri IN :uris OR :uris IS NULL)
+        AND uri IN :uris
         GROUP BY app, uri
         ORDER BY hits DESC
     """)
@@ -30,7 +30,7 @@ public interface StatsRepository extends JpaRepository<Hit, Long> {
         SELECT new ru.practicum.StatsDto(app, uri, COUNT(ip) AS hits)
         FROM Hit
         WHERE timestamp BETWEEN :start AND :end
-        AND (uri IN :uris OR :uris IS NULL)
+        AND uri IN :uris
         GROUP BY app, uri
         ORDER BY hits DESC
     """)
