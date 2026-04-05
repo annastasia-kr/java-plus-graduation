@@ -441,6 +441,7 @@ public class EventServiceImpl implements EventService {
 
         statsClient.saveHit(new HitDto(APP, httpServletRequest.getRequestURI(), httpServletRequest.getRemoteAddr(),
                 LocalDateTime.now()));
+
         eventRepository.save(event);
         Long confirmedRequests = requestClient.findAllByEventId(eventId)
                 .stream()
@@ -517,7 +518,7 @@ public class EventServiceImpl implements EventService {
     }
 
     private Long getEventViews(LocalDateTime createdOn, HttpServletRequest httpServletRequest) {
-        List<StatsDto> stat = statsClient.getStats(createdOn, LocalDateTime.now(),
+        List<StatsDto> stat = statsClient.getStats(createdOn, LocalDateTime.now().plusSeconds(1),
                 List.of(httpServletRequest.getRequestURI()), true);
         if (stat.isEmpty()) {
             return 0L;
