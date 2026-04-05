@@ -446,6 +446,9 @@ public class EventServiceImpl implements EventService {
                 .filter(e -> e.getStatus().equals(RequestStatus.CONFIRMED))
                 .count();
         Long views = getEventViews(start, httpServletRequest);
+        log.warn("Event views --- {}", views);
+        log.warn("Event getRequestURI --- {}", httpServletRequest.getRequestURI());
+        log.warn("Event getRemoteAddr --- {}", httpServletRequest.getRemoteAddr());
 
         statsClient.saveHit(new HitDto(null, APP, httpServletRequest.getRequestURI(), httpServletRequest.getRemoteAddr(),
                 LocalDateTime.now().plusSeconds(1)));
