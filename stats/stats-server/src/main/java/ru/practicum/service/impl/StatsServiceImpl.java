@@ -41,9 +41,14 @@ public class StatsServiceImpl implements StatsService {
             throw new ValidationException("The start date must be earlier than the end date.");
 
         if (unique) {
-            return statsRepository.findUniqueStatsByUrisAndTimestampBetween(start, end, uris);
+            if (uris != null && !uris.isEmpty())
+                return statsRepository.findUniqueStatsByUrisAndTimestampBetween(start, end, uris);
+            return statsRepository.findUniqueStatsByTimestampBetween(start, end);
         }
-        return statsRepository.findStatsByUrisAndTimestampBetween(start, end, uris);
+            if (uris != null && !uris.isEmpty())
+                return statsRepository.findStatsByUrisAndTimestampBetween(start, end, uris);
+
+            return statsRepository.findStatsByTimestampBetween(start, end);
     }
 
 }
