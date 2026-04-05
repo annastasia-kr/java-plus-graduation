@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
 import ru.practicum.HitDto;
 import ru.practicum.StatsDto;
 import ru.practicum.exception.ValidationException;
@@ -30,10 +29,10 @@ public class StatsServiceImpl implements StatsService {
     @Transactional
     @Override
     public HitDto create(HitDto hitDto) {
-        log.warn("Create hit {}", hitDto);
+        log.info("Create hit {}", hitDto);
         Hit createdHit = toHit(hitDto);
         Hit hit = statsRepository.save(createdHit);
-        log.warn("The hit {} has been created.", createdHit);
+        log.info("The hit {} has been created.", createdHit);
         return toHitDto(hit);
     }
 
