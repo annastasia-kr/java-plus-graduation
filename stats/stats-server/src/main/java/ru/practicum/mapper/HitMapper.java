@@ -1,19 +1,29 @@
 package ru.practicum.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import java.time.LocalDateTime;
+
+import lombok.experimental.UtilityClass;
 import ru.practicum.HitDto;
-import ru.practicum.StatsDto;
 import ru.practicum.model.Hit;
 
-@Mapper(componentModel = "spring")
-public interface HitMapper {
+@UtilityClass
+public class HitMapper {
 
-    @Mapping(target = "id", ignore = true)
-    Hit toHit(HitDto dto);
+    public static Hit toHit(HitDto hitDto) {
+        Hit hit = new Hit();
+        hit.setApp(hitDto.getApp());
+        hit.setIp(hitDto.getIp());
+        hit.setUri(hitDto.getUri());
+        hit.setTimestamp(LocalDateTime.now());
+        return hit;
+    }
 
-    @Mapping(target = "hits", ignore = true)
-    StatsDto ToStatsDto(Hit hit);
-
-    HitDto toHitDto(Hit hit);
+    public static HitDto toHitDto(Hit hit) {
+        HitDto hitDto = new HitDto();
+        hitDto.setApp(hit.getApp());
+        hitDto.setIp(hit.getIp());
+        hitDto.setUri(hit.getUri());
+        hitDto.setTimestamp(hit.getTimestamp());
+        return hitDto;
+    }
 }
