@@ -29,9 +29,9 @@ public class StatsController {
     public ResponseEntity<HitDto> create(@RequestBody @Valid HitDto hitDto) {
         log.warn("createHit hit: {}", hitDto);
         HitDto createdHit = statsService.create(hitDto);
-       // ResponseEntity<HitDto> response = new ResponseEntity<>(createdHit, HttpStatus.CREATED);
+        ResponseEntity<HitDto> response = new ResponseEntity<>(createdHit, HttpStatus.CREATED);
 
-        return ResponseEntity.ok(createdHit);
+        return response;
     }
 
     @GetMapping("/stats")
