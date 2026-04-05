@@ -17,7 +17,7 @@ spring:
           uri: lb://request-service
           predicates:
             - Path=/users/*/requests/**, /api/v1/requests/**
-        - id: stats-server
+        - id: stats_server_route
           uri: lb://stats-server
           predicates:
             - Path=/hit/**, /stats/**

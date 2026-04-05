@@ -18,8 +18,6 @@ spring:
       discovery:
         enabled: true
         serviceId: config-server
-server:
-  port: 9090
 
 eureka:
   client:
