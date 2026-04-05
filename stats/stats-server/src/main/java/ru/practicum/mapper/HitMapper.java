@@ -15,7 +15,7 @@ public class HitMapper {
         hit.setApp(hitDto.getApp());
         hit.setIp(hitDto.getIp());
         hit.setUri(hitDto.getUri());
-        hit.setTimestamp(hitDto.getTimestamp() != null ? hitDto.getTimestamp() : LocalDateTime.now());
+        hit.setTimestamp(LocalDateTime.now());
         return hit;
     }
 
