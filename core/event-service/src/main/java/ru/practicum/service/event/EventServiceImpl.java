@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
 public class EventServiceImpl implements EventService {
 
     private static final String URI = "/events/";
-    private static final String APP = "main-service";
+    private static final String APP = "ewm-main-service";
 
     private final EventRepository eventRepository;
     private final UserClient userClient;

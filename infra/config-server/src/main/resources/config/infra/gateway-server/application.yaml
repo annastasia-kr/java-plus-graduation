@@ -17,6 +17,10 @@ spring:
           uri: lb://request-service
           predicates:
             - Path=/users/*/requests/**, /api/v1/requests/**
+        - id: stats-server
+          uri: lb://stats-server
+          predicates:
+            - Path=/hit/**, /stats/**
         - id: event_service_route
           uri: lb://event-service
           predicates:
@@ -31,6 +35,8 @@ management:
         include: "*"
   endpoint:
     gateway:
+      enabled: true
+    routes:
       enabled: true
 
 logging:
