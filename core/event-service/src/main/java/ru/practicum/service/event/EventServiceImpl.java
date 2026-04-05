@@ -436,16 +436,17 @@ public class EventServiceImpl implements EventService {
         }
 
         LocalDateTime start = event.getPublishedOn() == null ? event.getCreatedOn() : event.getPublishedOn();
+        statsClient.saveHit(new HitDto(null, APP, httpServletRequest.getRequestURI(), httpServletRequest.getRemoteAddr(),
+                LocalDateTime.now().plusSeconds(1)));
 
         eventRepository.save(event);
         Long confirmedRequests = requestClient.findAllByEventId(eventId)
                 .stream()
                 .filter(e -> e.getStatus().equals(RequestStatus.CONFIRMED))
                 .count();
-        Long views = getEventViews(start, event.getId(), httpServletRequest);
+        Long views = getEventViews(start, httpServletRequest);
 
-        statsClient.saveHit(new HitDto(null, APP, httpServletRequest.getRequestURI(), httpServletRequest.getRemoteAddr(),
-                LocalDateTime.now().plusSeconds(1)));
+
         return eventMapper.toEventDto(event, confirmedRequests, views);
     }
 
@@ -510,7 +511,7 @@ public class EventServiceImpl implements EventService {
         }
     }
 
-    private Long getEventViews(LocalDateTime createdOn, Long eventId, HttpServletRequest httpServletRequest) {
+    private Long getEventViews(LocalDateTime createdOn, HttpServletRequest httpServletRequest) {
         List<StatsDto> stat = statsClient.getStats(createdOn, LocalDateTime.now().plusSeconds(1),
                 List.of(httpServletRequest.getRequestURI()), true);
         if (stat.isEmpty()) {

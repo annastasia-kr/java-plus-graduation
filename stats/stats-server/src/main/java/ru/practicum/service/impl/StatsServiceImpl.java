@@ -37,7 +37,6 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     public Collection<StatsDto> get(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
-        log.warn("Statistics: unique={}, uris={}", unique, uris);
         if (start.isAfter(end))
             throw new ValidationException("The start date must be earlier than the end date.");
 
