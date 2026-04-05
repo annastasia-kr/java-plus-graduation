@@ -27,3 +27,13 @@ eureka:
     preferIpAddress: true
     instance-id: "${spring.application.name}:${random.value}"
     leaseRenewalIntervalInSeconds: 10
+
+logging:
+  level:
+    root: DEBUG
+    org.springframework.web: TRACE
+    org.springframework.cloud: TRACE
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+    feign: DEBUG
+    com.netflix.discovery: DEBUG
