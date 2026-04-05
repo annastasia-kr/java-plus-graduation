@@ -28,12 +28,12 @@ public class StatsServiceImpl implements StatsService {
 
     @Transactional
     @Override
-    public void create(HitDto hitDto) {
+    public HitDto create(HitDto hitDto) {
         log.warn("Create hit {}", hitDto);
         Hit createdHit = toHit(hitDto);
         Hit hit = statsRepository.save(createdHit);
         log.warn("The hit {} has been created.", createdHit);
-        toHitDto(hit);
+        return toHitDto(hit);
     }
 
     @Override

@@ -21,5 +21,5 @@ public interface StatsClient {
                             @RequestParam(required = false) List<String> uris,
                             @RequestParam(required = false) Boolean unique);
     @PostMapping("/hit")
-    void saveHit(@RequestBody HitDto hitDto);
+    String saveHit(@RequestBody HitDto hitDto);
 }
