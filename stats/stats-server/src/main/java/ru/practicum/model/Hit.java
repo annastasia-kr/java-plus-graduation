@@ -27,6 +27,7 @@ public class Hit {
 
     private String uri;
 
+    @Column(name = "created_timestamp", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
