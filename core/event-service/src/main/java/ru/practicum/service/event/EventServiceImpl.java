@@ -448,10 +448,6 @@ public class EventServiceImpl implements EventService {
                 .filter(e -> e.getStatus().equals(RequestStatus.CONFIRMED))
                 .count();
         Long views = getEventViews(start, httpServletRequest);
-        log.warn("Event views --- {}", views);
-        log.warn("Event getRequestURI --- {}", httpServletRequest.getRequestURI());
-        log.warn("Event getRemoteAddr --- {}", httpServletRequest.getRemoteAddr());
-
 
         return eventMapper.toEventDto(event, confirmedRequests, views);
     }
