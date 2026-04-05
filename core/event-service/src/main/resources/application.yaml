@@ -61,6 +61,9 @@ management:
 
 logging:
   level:
+    root: DEBUG
+    org.springframework.web: TRACE
+    org.springframework.cloud: TRACE
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql: TRACE
     feign: DEBUG
