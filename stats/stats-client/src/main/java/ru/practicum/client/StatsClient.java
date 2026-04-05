@@ -1,5 +1,6 @@
 package ru.practicum.client;
 
+import feign.FeignException;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,5 +22,5 @@ public interface StatsClient {
                             @RequestParam(required = false) List<String> uris,
                             @RequestParam(required = false) Boolean unique);
     @PostMapping("/hit")
-    String saveHit(@RequestBody HitDto hitDto);
+    String saveHit(@RequestBody HitDto hitDto) throws FeignException;
 }
