@@ -387,7 +387,7 @@ public class EventServiceImpl implements EventService {
                         num -> num,
                         num -> hits.getOrDefault(URI + num, 0L)));
 
-        statsClient.saveHit(new HitDto(null, APP, httpServletRequest.getRequestURI(), httpServletRequest.getRemoteAddr(),
+        statsClient.saveHit(new HitDto(APP, httpServletRequest.getRequestURI(), httpServletRequest.getRemoteAddr(),
                 LocalDateTime.now()));
 
         return events.stream()
@@ -450,8 +450,8 @@ public class EventServiceImpl implements EventService {
         log.warn("Event getRequestURI --- {}", httpServletRequest.getRequestURI());
         log.warn("Event getRemoteAddr --- {}", httpServletRequest.getRemoteAddr());
 
-        statsClient.saveHit(new HitDto(null, APP, httpServletRequest.getRequestURI(), httpServletRequest.getRemoteAddr(),
-                LocalDateTime.now().plusSeconds(1)));
+        statsClient.saveHit(new HitDto(APP, httpServletRequest.getRequestURI(), httpServletRequest.getRemoteAddr(),
+                LocalDateTime.now()));
         return eventMapper.toEventDto(event, confirmedRequests, views);
     }
 
@@ -517,7 +517,7 @@ public class EventServiceImpl implements EventService {
     }
 
     private Long getEventViews(LocalDateTime createdOn, HttpServletRequest httpServletRequest) {
-        List<StatsDto> stat = statsClient.getStats(createdOn, LocalDateTime.now().plusSeconds(1),
+        List<StatsDto> stat = statsClient.getStats(createdOn, LocalDateTime.now(),
                 List.of(httpServletRequest.getRequestURI()), true);
         if (stat.isEmpty()) {
             return 0L;
