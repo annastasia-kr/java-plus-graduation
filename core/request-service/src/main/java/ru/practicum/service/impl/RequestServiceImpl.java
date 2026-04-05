@@ -53,6 +53,13 @@ public class RequestServiceImpl implements RequestService {
     @Transactional
     public RequestDto create(Long userId, Long eventId) {
 
+        if (userId == null) {
+            throw new NotFoundException("User id is null");
+        }
+        if (eventId == null) {
+            throw new NotFoundException("Event id is null");
+        }
+
         UserDto user = findUserById(userId).orElseThrow(
                 () -> new NotFoundException("User (id = " + userId + " not found"));
         EventDto event = findEventById(eventId).orElseThrow(() ->
