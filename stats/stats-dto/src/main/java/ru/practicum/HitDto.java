@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class HitDto {
 
-    private Long id;
-
     @NotBlank(message = "App must not be blank")
     private String app;
 

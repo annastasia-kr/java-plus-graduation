@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.HitDto;
 import ru.practicum.StatsDto;
 import ru.practicum.exception.ValidationException;
+import ru.practicum.mapper.HitMapper;
 import ru.practicum.model.Hit;
 import ru.practicum.repository.StatsRepository;
 import ru.practicum.service.StatsService;
@@ -15,9 +16,6 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-import static ru.practicum.mapper.HitMapper.toHit;
-import static ru.practicum.mapper.HitMapper.toHitDto;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -25,15 +23,16 @@ import static ru.practicum.mapper.HitMapper.toHitDto;
 public class StatsServiceImpl implements StatsService {
 
     private final StatsRepository statsRepository;
+    private final HitMapper hitMapper;
 
     @Transactional
     @Override
     public HitDto create(HitDto hitDto) {
         log.warn("Create hit {}", hitDto);
-        Hit createdHit = toHit(hitDto);
+        Hit createdHit = hitMapper.toHit(hitDto);
         Hit hit = statsRepository.save(createdHit);
         log.warn("The hit {} has been created.", createdHit);
-        return toHitDto(hit);
+        return hitMapper.toHitDto(hit);
     }
 
     @Override
