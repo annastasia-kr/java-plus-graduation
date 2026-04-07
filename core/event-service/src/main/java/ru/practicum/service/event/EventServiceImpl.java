@@ -353,7 +353,6 @@ public class EventServiceImpl implements EventService {
         List<Event> events = typedQuery.getResultList();
 
 
-
         if (events.isEmpty()) {
             return List.of();
         }
@@ -409,26 +408,14 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDto> getEvents(List<Long> eventIds) {
 
-        if (eventIds == null || eventIds.isEmpty()) {
-            return Collections.emptyList();
-        }
-
         Map<Long, Long> confirmedRequestsMap = requestClient.countByEventIdsAndStatusMap(
                 eventIds, RequestStatus.CONFIRMED);
 
         return eventRepository.findAllById(eventIds).stream()
                 .map(event -> {
                     Long confirmedRequests = confirmedRequestsMap.getOrDefault(event.getId(), 0L);
-                    boolean hasAvailableSpots = event.getParticipantLimit() == 0 ||
-                            confirmedRequests < event.getParticipantLimit();
-
-                    if (hasAvailableSpots) {
-                        return eventMapper.toEventDto(event, confirmedRequests, 0L);
-                    } else {
-                        return null;
-                    }
+                    return eventMapper.toEventDto(event, confirmedRequests, 0L);
                 })
-                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
