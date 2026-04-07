@@ -11,7 +11,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-@Slf4j
 public class InternalUserController {
 
     private final UserService userService;

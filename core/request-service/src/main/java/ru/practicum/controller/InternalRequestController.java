@@ -15,7 +15,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/requests")
 @RequiredArgsConstructor
-@Slf4j
 public class InternalRequestController {
 
     private final RequestService requestService;
