@@ -29,6 +29,7 @@ public class StatsServiceImpl implements StatsService {
     @Transactional
     @Override
     public HitDto create(HitDto hitDto) {
+        log.info("Create hit {}", hitDto);
         Hit createdHit = toHit(hitDto);
         Hit hit = statsRepository.save(createdHit);
         log.info("The hit {} has been created.", createdHit);
@@ -37,15 +38,18 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     public Collection<StatsDto> get(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
-        if (start == null || end == null)
-            throw new ValidationException("The start date and end date must be not null.");
         if (start.isAfter(end))
             throw new ValidationException("The start date must be earlier than the end date.");
 
         if (unique) {
-            return statsRepository.findUniqueStatsByUrisAndTimestampBetween(start, end, uris);
+            if (uris != null && !uris.isEmpty())
+                return statsRepository.findUniqueStatsByUrisAndTimestampBetween(start, end, uris);
+            return statsRepository.findUniqueStatsByTimestampBetween(start, end);
         }
-        return statsRepository.findStatsByUrisAndTimestampBetween(start, end, uris);
+            if (uris != null && !uris.isEmpty())
+                return statsRepository.findStatsByUrisAndTimestampBetween(start, end, uris);
+
+            return statsRepository.findStatsByTimestampBetween(start, end);
     }
 
 }

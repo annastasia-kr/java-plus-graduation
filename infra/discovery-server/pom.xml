@@ -9,8 +9,13 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>ru.practicum</groupId>
     <artifactId>discovery-server</artifactId>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -28,9 +33,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>ru.practicum.DiscoveryServer</mainClass>
-                </configuration>
             </plugin>
         </plugins>
     </build>
