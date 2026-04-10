@@ -15,10 +15,13 @@ public class EventSimilarity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "event_a")
     private Long eventA;
 
+    @Column(name = "event_b")
     private Long eventB;
 
+    @Column(name = "similarity")
     private double similarity;
 
 }
