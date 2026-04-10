@@ -28,13 +28,13 @@ grpc:
     port: 0
 analyzer:
   kafka:
-    user-action-consumer-properties:
+    action-consumer-properties:
       bootstrap.servers: localhost:9092
       group.id: analyzer-group-id
       key.deserializer: org.apache.kafka.common.serialization.LongDeserializer
       value.deserializer: ru.practicum.kafka.serializer.UserActionDeserializer
       max.poll.records: 100
-    event-similarity-consumer-properties:
+    similarity-consumer-properties:
       bootstrap.servers: localhost:9092
       group.id: analyzer-group-id
       key.deserializer: org.apache.kafka.common.serialization.LongDeserializer

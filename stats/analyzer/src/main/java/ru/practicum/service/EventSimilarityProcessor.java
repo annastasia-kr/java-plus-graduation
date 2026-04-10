@@ -19,7 +19,7 @@ public class EventSimilarityProcessor {
 
     private static final Duration TIMEOUT = Duration.ofMillis(5000);
 
-    private final KafkaConsumer<String, EventSimilarityAvro> consumer;
+    private final KafkaConsumer<Long, EventSimilarityAvro> consumer;
     private final EventSimilarityHandler handler;
     private final String topic;
 
@@ -40,7 +40,7 @@ public class EventSimilarityProcessor {
             // Цикл обработки событий
             while (true) {
 
-                ConsumerRecords<String, EventSimilarityAvro> records = consumer.poll(TIMEOUT);
+                ConsumerRecords<Long, EventSimilarityAvro> records = consumer.poll(TIMEOUT);
 
                 if (records.isEmpty()) {
                     log.debug("No new records received after {} ms", TIMEOUT);
@@ -49,7 +49,7 @@ public class EventSimilarityProcessor {
                 }
 
                 // ... реализация цикла опроса ...
-                for (ConsumerRecord<String, EventSimilarityAvro> record : records) {
+                for (ConsumerRecord<Long, EventSimilarityAvro> record : records) {
                     EventSimilarityAvro sensorsSnapshotAvro = record.value();
 
                     handler.handle(sensorsSnapshotAvro);
