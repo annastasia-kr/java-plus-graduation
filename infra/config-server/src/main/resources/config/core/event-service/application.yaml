@@ -20,9 +20,6 @@ spring:
         format_sql: true
 
 
-server:
-  port: 0
-
 grpc:
   client:
     analyzer:
