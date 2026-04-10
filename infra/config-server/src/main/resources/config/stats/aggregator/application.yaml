@@ -17,5 +17,5 @@ aggregator:
       stats-user-action-v1: stats.user-actions.v1
       stats-events-similarity-v1: stats.events-similarity.v1
 
-#server:
-#  port: 8081
+server:
+  port: 8081
