@@ -16,5 +16,4 @@ public interface UserClient {
     @GetMapping("/{id}")
     Optional<UserDto> getUserById(@PathVariable Long id);
 
-    List<UserDto> getUsersById(List<Long> initiatorIds);
 }

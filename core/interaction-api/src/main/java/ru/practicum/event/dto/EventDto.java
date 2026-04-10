@@ -47,7 +47,5 @@ public class EventDto {
 
     private StateEvent state;
 
-    private Long views;
-
     private Double rating;
 }
