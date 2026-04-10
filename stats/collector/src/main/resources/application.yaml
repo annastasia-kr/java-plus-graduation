@@ -18,9 +18,6 @@ spring:
       discovery:
         enabled: true
         serviceId: config-server
-grpc:
-  server:
-    port: 0
 
 eureka:
   client:
