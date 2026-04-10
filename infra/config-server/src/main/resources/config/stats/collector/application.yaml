@@ -15,3 +15,6 @@ collector:
     topics:
       user-actions: stats.user-actions.v1
       events-similarity: stats.events-similarity.v1
+
+server:
+  port: 8082
