@@ -17,4 +17,4 @@ collector:
       events-similarity: stats.events-similarity.v1
 
 server:
-  port: 8082
+  port: 0
