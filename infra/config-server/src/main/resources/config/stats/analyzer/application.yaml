@@ -34,7 +34,7 @@ analyzer:
       key.deserializer: org.apache.kafka.common.serialization.LongDeserializer
       value.deserializer: ru.practicum.kafka.serializer.UserActionDeserializer
       max.poll.records: 100
-    similarity-consumer-properties:
+    similarity-properties:
       bootstrap.servers: localhost:9092
       group.id: analyzer-group-id
       key.deserializer: org.apache.kafka.common.serialization.LongDeserializer
