@@ -18,9 +18,11 @@ logging:
     org.springframework.orm.jpa.JpaTransactionManager: DEBUG
 
 grpc:
+  server:
+    port: 0
   client:
-    hub-router:
-      address: static://localhost:59090
+    analyzer:
+      address: 'discovery:///analyzer'
       enableKeepAlive: true
       keepAliveWithoutCalls: true
       negotiationType: plaintext
