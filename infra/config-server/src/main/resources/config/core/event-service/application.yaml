@@ -32,6 +32,8 @@ grpc:
       negotiationType: plaintext
       enableKeepAlive: true
       keepAliveWithoutCalls: true
+  server:
+    port: 0
 logging:
   level:
     org.springframework.orm.jpa: INFO
