@@ -1,0 +1,20 @@
+/**
+ * Протокол
+ * Информация о мероприятии
+ */
+@namespace("ru.practicum.ewm.stats.avro")
+protocol EventProtocol {
+
+	/**
+     * Мероприятие
+     *
+     * @param id идентификатор мероприятия
+     * @param categoryId идентификатор категории мероприятия
+     * @param eventDate дата проведения мероприятия
+     */
+	record EventAvro {
+		long id;
+		long categoryId;
+		timestamp_ms eventDate;
+	}
+}

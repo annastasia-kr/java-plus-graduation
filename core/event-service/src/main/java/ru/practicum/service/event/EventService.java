@@ -32,8 +32,6 @@ public interface EventService {
 
     EventDto updateEventByAdmin(Long eventId, UpdateEventDtoAdminRequest updateEventDtoAdminRequest);
 
-    EventDto getEvent(Long id, HttpServletRequest httpServletRequest);
-
     Optional<EventDto> getEvent(Long id);
 
     Collection<EventDto> getEventsPublic(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart,
@@ -41,4 +39,10 @@ public interface EventService {
                                          Integer size, HttpServletRequest httpServletRequest);
 
     List<EventDto> getEvents(List<Long> eventIds);
+
+    List<EventShortDto> getRecommendations(Long userId);
+
+    EventDto getEvent(Long id, Long userId, HttpServletRequest httpServletRequest);
+
+    void likeEvent(Long userId, Long eventId);
 }

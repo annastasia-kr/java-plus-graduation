@@ -57,4 +57,6 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private StateEvent state;
 
+    @Column(name = "rating")
+    private Double rating;
 }

@@ -30,17 +30,18 @@ public interface EventMapper {
     @Mapping(target = "confirmedRequests", constant = "0L")
     @Mapping(target = "state", constant = "PENDING")
     @Mapping(target = "participantLimit", expression = "java(newEventDto.getParticipantLimit() == null ? 0L : newEventDto.getParticipantLimit())")
+    @Mapping(target = "rating", constant = "0.0")
     @Mapping(target = "requestModeration", expression = "java(newEventDto.getRequestModeration() == null ? true : newEventDto.getRequestModeration())")
     Event toEvent(NewEventDto newEventDto, Category category, UserDto initiator, Location location);
 
     @Mapping(source = "event.category", target = "category")
     @Mapping(source = "event.location", target = "location")
     @Mapping(source = "confirmedRequests", target = "confirmedRequests")
-    @Mapping(source = "views", target = "views")
     @Mapping(source = "event.initiator", target = "initiator")
+    @Mapping(source = "event.rating", target = "rating")
     @Mapping(source = "event.participantLimit", target = "participantLimit")
     @Mapping(source = "event.id", target = "id")
-    EventDto toEventDto(Event event, Long confirmedRequests, Long views);
+    EventDto toEventDto(Event event, Long confirmedRequests);
 
     @Mapping(source = "category", target = "category")
     @Mapping(source = "confirmedRequests", target = "confirmedRequests")
@@ -49,8 +50,8 @@ public interface EventMapper {
     @Mapping(source = "title", target = "title")
     @Mapping(source = "eventDate", target = "eventDate")
     @Mapping(source = "paid", target = "paid")
+    @Mapping(source = "rating", target = "rating")
     @Mapping(source = "participantLimit", target = "participantLimit")
-    @Mapping(target = "views", constant = "0L")
     @Mapping(source = "initiator", target = "initiator")
     EventShortDto toEventShortDto(Event event);
 

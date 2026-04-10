@@ -24,4 +24,7 @@ public interface RequestClient {
     @GetMapping("/confirmed/count")
     Map<Long, Long> countByEventIdsAndStatusMap(@RequestParam("eventIds") List<Long> eventIds,
                                     @RequestParam RequestStatus requestStatus);
+
+    @GetMapping("{eventId}/participant/{userId}")
+    boolean isParticipant(@PathVariable Long userId, @PathVariable Long eventId);
 }

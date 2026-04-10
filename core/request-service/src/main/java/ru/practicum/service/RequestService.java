@@ -28,4 +28,6 @@ public interface RequestService {
     List<EventResult> countRequestsForEvents(List<Long> eventIds, RequestStatus requestStatus);
 
     Map<Long, Long> countByEventIdsAndStatusMap(List<Long> eventIds, RequestStatus requestStatus);
+
+    boolean isParticipant(Long userId, Long eventId);
 }
