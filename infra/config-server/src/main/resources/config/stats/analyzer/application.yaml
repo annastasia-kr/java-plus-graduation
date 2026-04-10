@@ -18,8 +18,6 @@ logging:
     org.springframework.orm.jpa.JpaTransactionManager: DEBUG
 
 grpc:
-  server:
-    port: 0
   client:
     analyzer:
       address: 'discovery:///analyzer'
@@ -44,3 +42,6 @@ analyzer:
     topics:
       stats-user-action-v1: stats.user-actions.v1
       stats-events-similarity-v1: stats.events-similarity.v1
+
+server:
+  port: 8081
