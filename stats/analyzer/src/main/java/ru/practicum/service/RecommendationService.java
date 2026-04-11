@@ -113,7 +113,7 @@ public class RecommendationService {
         double totalSimilarityScore = 0.0;
 
         for (EventSimilarity connection : similarityPairs) {
-            // Определяем ID соседнего события (не целевого)
+            // Определяем ID соседнего события
             long neighbourEventId = (connection.getEventA() == targetEventId)
                     ? connection.getEventB()
                     : connection.getEventA();
@@ -163,7 +163,7 @@ public class RecommendationService {
                     new HashSet<>(neighbourIds)
             );
 
-            // Вычисляем итоговую оценку релевантности для кандидата
+            // Вычисляем итоговую оценку для кандидата
             double calculatedRelevance = computeEventRelevance(
                     topConnections,
                     userInteractions,

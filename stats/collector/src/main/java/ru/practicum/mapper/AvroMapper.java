@@ -21,7 +21,8 @@ public class AvroMapper {
                 .setUserId(userActionProto.getUserId())
                 .setEventId(userActionProto.getEventId())
                 .setActionType(actionTypeAvro)
-                .setTimestamp(Instant.ofEpochSecond(userActionProto.getTimestamp().getSeconds()))
+                .setTimestamp(Instant.ofEpochSecond(userActionProto.getTimestamp().getSeconds(),
+                        userActionProto.getTimestamp().getNanos()))
                 .build();
     }
 

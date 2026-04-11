@@ -17,7 +17,6 @@ public class AnalyzerRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Thread hubEventsThread = new Thread(userActionProcessor);
 
-        hubEventsThread.setName("HubEventHandlerThread");
         hubEventsThread.start();
 
         eventSimilarityProcessor.start();

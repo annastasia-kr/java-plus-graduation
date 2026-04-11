@@ -9,7 +9,6 @@ import ru.practicum.ewm.stats.avro.UserActionAvro;
 
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 @Slf4j
@@ -23,18 +22,18 @@ public class EventSimilarityService {
             ActionTypeAvro.LIKE, 1.0
     );
 
-    private final ConcurrentHashMap<Long, ConcurrentHashMap<Long, Double>> userEventWeights = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<Long, Double> eventTotalWeights = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<Long, ConcurrentHashMap<Long, Double>> minWeightSums = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<Long, ConcurrentSkipListSet<Long>> userInteractionHistory = new ConcurrentHashMap<>();
+    private final Map<Long, Map<Long, Double>> userEventWeights = new HashMap<>();
+    private final Map<Long, Double> eventTotalWeights = new HashMap<>();
+    private final Map<Long, Map<Long, Double>> minWeightSums = new HashMap<>();
+    private final Map<Long, ConcurrentSkipListSet<Long>> userInteractionHistory = new HashMap<>();
 
     public List<EventSimilarityAvro> updateSimilarity(UserActionAvro userActionAvro) {
         long eventId = userActionAvro.getEventId();
         long userId = userActionAvro.getUserId();
         double newWeight = ACTION_WEIGHTS.get(userActionAvro.getActionType());
 
-        ConcurrentHashMap<Long, Double> userWeightsForEvent = userEventWeights.computeIfAbsent(
-                eventId, k -> new ConcurrentHashMap<>()
+        Map<Long, Double> userWeightsForEvent = userEventWeights.computeIfAbsent(
+                eventId, k -> new HashMap<>()
         );
 
         Double oldWeight = userWeightsForEvent.compute(userId, (key, current) -> {
@@ -81,7 +80,7 @@ public class EventSimilarityService {
     }
 
     private double recalculateSimilarityForPair(long eventA, long eventB, long userId, double oldWeight, double newWeight) {
-        ConcurrentHashMap<Long, Double> weightsForEventB = userEventWeights.getOrDefault(eventB, new ConcurrentHashMap<>());
+        Map<Long, Double> weightsForEventB = userEventWeights.getOrDefault(eventB, new HashMap<>());
         double weightB = weightsForEventB.getOrDefault(userId, 0.0);
 
         if (weightB == 0.0) {
@@ -100,7 +99,7 @@ public class EventSimilarityService {
         long second = Math.max(eventA, eventB);
 
         minWeightSums
-                .computeIfAbsent(first, x -> new ConcurrentHashMap<>())
+                .computeIfAbsent(first, x -> new HashMap<>())
                 .merge(second, delta, Double::sum);
     }
 
@@ -120,7 +119,7 @@ public class EventSimilarityService {
     private double getMinWeightSum(long eventA, long eventB) {
         long first = Math.min(eventA, eventB);
         long second = Math.max(eventA, eventB);
-        return minWeightSums.getOrDefault(first, new ConcurrentHashMap<>())
+        return minWeightSums.getOrDefault(first, new HashMap<>())
                 .getOrDefault(second, 0.0);
     }
 }
