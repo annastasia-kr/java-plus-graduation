@@ -15,9 +15,9 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class EventSimilarityProcessor {
+public class EventSimilarityProcessor implements Runnable {
 
-    private static final Duration TIMEOUT = Duration.ofMillis(5000);
+    private static final Duration TIMEOUT = Duration.ofMillis(100);
 
     private final KafkaConsumer<Long, EventSimilarityAvro> consumer;
     private final EventSimilarityHandler handler;
@@ -29,7 +29,8 @@ public class EventSimilarityProcessor {
         this.topic = config.getTopics().get(KafkaConfig.KafkaTopic.EVENTS_SIMILARITY);
     }
 
-    public void start() {
+    @Override
+    public void run() {
         try {
             // ... подписка на топик ...
             consumer.subscribe(List.of(this.topic));
@@ -61,12 +62,20 @@ public class EventSimilarityProcessor {
             log.error("Unexpected error in EventSimilarityProcessor loop: {}", e.getMessage(), e);
         } finally {
             try {
-                consumer.commitSync();
+                consumer.commitAsync((offsets, exception) -> {
+                    if (exception != null) {
+                        log.warn("Offset {} commit error: {}", offsets, exception);
+                    }
+                });
             } finally {
                 log.info("Closing Event Similarity consumer");
                 consumer.close();
             }
         }
+    }
+
+    public void stop() {
+        consumer.wakeup();
     }
 
 }

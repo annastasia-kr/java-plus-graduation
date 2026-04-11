@@ -24,7 +24,7 @@ import java.util.Map;
 @Component
 public class AggregatorProcessor {
 
-    private static final Duration TIMEOUT = Duration.ofMillis(5000);
+    private static final Duration TIMEOUT = Duration.ofMillis(100);
 
     private final KafkaConsumer<Long, UserActionAvro> consumer;
     private final KafkaProducer<Long, SpecificRecordBase> producer;

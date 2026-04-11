@@ -1,5 +1,6 @@
 package ru.practicum.service;
 
+import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -15,7 +16,7 @@ import java.util.concurrent.Future;
 
 @Component
 @Slf4j
-public class UserActionProducer implements AutoCloseable {
+public class UserActionProducer {
 
     private final KafkaProducer<Long, SpecificRecordBase> producer;
     private final KafkaConfig config;
@@ -52,9 +53,9 @@ public class UserActionProducer implements AutoCloseable {
         }
     }
 
-    @Override
-    public void close() throws Exception {
+    @PreDestroy
+    private void close() {
         producer.flush();
-        producer.close(Duration.ofSeconds(10));
+        producer.close();
     }
 }

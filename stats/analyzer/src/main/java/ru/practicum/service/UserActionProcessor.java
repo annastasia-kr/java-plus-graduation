@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 public class UserActionProcessor implements Runnable {
 
-    private static final Duration TIMEOUT = Duration.ofMillis(5000);
+    private static final Duration TIMEOUT = Duration.ofMillis(150);
 
     private final KafkaConsumer<Long, UserActionAvro> consumer;
     private final UserActionHandler handler;
@@ -61,11 +61,19 @@ public class UserActionProcessor implements Runnable {
             log.error("Unexpected error in user action consumer loop: {}", e.getMessage(), e);
         } finally {
             try {
-                consumer.commitSync();
+                consumer.commitAsync((offsets, exception) -> {
+                    if (exception != null) {
+                        log.warn("Offset {} commit error: {}", offsets, exception);
+                    }
+                });
             } finally {
                 log.info("Closing user action consumer");
                 consumer.close();
             }
         }
+    }
+
+    public void stop() {
+        consumer.wakeup();
     }
 }
