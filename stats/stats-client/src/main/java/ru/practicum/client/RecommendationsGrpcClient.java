@@ -16,37 +16,22 @@ public class RecommendationsGrpcClient {
     @GrpcClient("analyzer")
     private RecommendationsControllerGrpc.RecommendationsControllerBlockingStub blockingStub;
 
-    public List<RecommendedEventProto> getRecommendationsForUser(long userId, long maxResults) {
+    public List<RecommendedEventProto> getRecommendationsForUser(long userId, int maxResults) {
         UserPredictionsRequestProto request = UserPredictionsRequestProto.newBuilder()
                 .setUserId(userId)
-                .setMaxResult((int) maxResults)
+                .setMaxResult(maxResults)
                 .build();
 
         log.info("Calling gRPC GetRecommendationsForUser: {}", request);
-        Iterator<RecommendedEventProto> iterator = blockingStub.getRecommendationsForUser(request);
-        return collectStream(iterator);
-    }
 
-    public List<RecommendedEventProto> getSimilarEvents(long eventId, long userId, long maxResults) {
-        SimilarEventsRequestProto request = SimilarEventsRequestProto.newBuilder()
-                .setEventId(eventId)
-                .setUserId(userId)
-                .setMaxResult((int) maxResults)
-                .build();
+        try {
+            Iterator<RecommendedEventProto> iterator = blockingStub.getRecommendationsForUser(request);
+            return collectStream(iterator);
+        } catch (Exception e) {
+            log.error("getRecommendationsForUser failed : {}", e.getMessage());
+        }
 
-        log.info("Calling gRPC GetSimilarEvents: {}", request);
-        Iterator<RecommendedEventProto> iterator = blockingStub.getSimilarEvents(request);
-        return collectStream(iterator);
-    }
-
-    public List<RecommendedEventProto> getInteractionsCount(List<Long> eventIds) {
-        InteractionsCountRequestProto request = InteractionsCountRequestProto.newBuilder()
-                .addAllEventId(eventIds)
-                .build();
-
-        log.info("Calling gRPC GetInteractionsCount: {}", request);
-        Iterator<RecommendedEventProto> iterator = blockingStub.getInteractionsCount(request);
-        return collectStream(iterator);
+        return List.of();
     }
 
     private List<RecommendedEventProto> collectStream(Iterator<RecommendedEventProto> iterator) {

@@ -19,25 +19,28 @@ public class UserActionGrpcClient {
 
     public void collectUserAction(long userId,
                                   long eventId,
-                                  ActionTypeProto actionType,
-                                  Instant timestamp) {
-        Timestamp protoTimestamp = Timestamp.newBuilder()
-                .setSeconds(timestamp.getEpochSecond())
-                .setNanos(timestamp.getNano())
+                                  ActionTypeProto actionType) {
+
+        Instant now = Instant.now();
+        Timestamp timestamp = Timestamp.newBuilder()
+                .setSeconds(now.getEpochSecond())
+                .setNanos(now.getNano())
                 .build();
 
         UserActionProto request = UserActionProto.newBuilder()
                 .setUserId(userId)
                 .setEventId(eventId)
                 .setActionType(actionType)
-                .setTimestamp(protoTimestamp)
+                .setTimestamp(timestamp)
                 .build();
 
-        collectUserAction(request);
-    }
-
-    public void collectUserAction(UserActionProto request) {
         log.info("Calling gRPC CollectUserAction: {}", request);
-        blockingStub.collectUserAction(request);
+
+        try {
+            blockingStub.collectUserAction(request);
+        } catch (Exception e) {
+            log.error("Error collect user actions: {}", e.getMessage());
+        }
+
     }
 }

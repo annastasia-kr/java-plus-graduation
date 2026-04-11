@@ -41,7 +41,6 @@ import ru.practicum.user.client.UserClient;
 import ru.practicum.user.dto.UserDto;
 
 import java.lang.IllegalStateException;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -458,7 +457,7 @@ public class EventServiceImpl implements EventService {
 
         LocalDateTime start = event.getPublishedOn() == null ? event.getCreatedOn() : event.getPublishedOn();
 
-        userActionGrpcClient.collectUserAction(userId, id, ActionTypeProto.ACTION_VIEW, Instant.now());
+        userActionGrpcClient.collectUserAction(userId, id, ActionTypeProto.ACTION_VIEW);
 
         eventRepository.save(event);
         Long confirmedRequests = requestClient.findAllByEventId(id)
@@ -474,7 +473,7 @@ public class EventServiceImpl implements EventService {
         if (!requestClient.isParticipant(userId, eventId)) {
             throw new ValidationException("User with ID " + userId + " is not a participant of event with " + eventId);
         }
-        userActionGrpcClient.collectUserAction(userId, eventId, ActionTypeProto.ACTION_LIKE, Instant.now());
+        userActionGrpcClient.collectUserAction(userId, eventId, ActionTypeProto.ACTION_LIKE);
     }
 
 
