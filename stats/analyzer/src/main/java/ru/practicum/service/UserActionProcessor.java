@@ -19,7 +19,7 @@ public class UserActionProcessor implements Runnable {
 
     private static final Duration TIMEOUT = Duration.ofMillis(5000);
 
-    private final KafkaConsumer<String, UserActionAvro> consumer;
+    private final KafkaConsumer<Long, UserActionAvro> consumer;
     private final UserActionHandler handler;
     private final String topic;
 
@@ -41,7 +41,7 @@ public class UserActionProcessor implements Runnable {
             }));
             // Цикл обработки событий
             while (true) {
-                ConsumerRecords<String, UserActionAvro> records = consumer.poll(TIMEOUT);
+                ConsumerRecords<Long, UserActionAvro> records = consumer.poll(TIMEOUT);
 
                 if (records.isEmpty()) {
                     log.debug("No new records received after {} ms", TIMEOUT);
@@ -50,7 +50,7 @@ public class UserActionProcessor implements Runnable {
                 }
 
                 // ... реализация цикла опроса ...
-                for (ConsumerRecord<String, UserActionAvro> record : records) {
+                for (ConsumerRecord<Long, UserActionAvro> record : records) {
                     UserActionAvro hubEventAvro = record.value();
                     handler.handle(hubEventAvro);
                 }

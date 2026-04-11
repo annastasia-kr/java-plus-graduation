@@ -50,9 +50,9 @@ public class EventSimilarityProcessor {
 
                 // ... реализация цикла опроса ...
                 for (ConsumerRecord<Long, EventSimilarityAvro> record : records) {
-                    EventSimilarityAvro sensorsSnapshotAvro = record.value();
+                    EventSimilarityAvro eventSimilarityAvro = record.value();
 
-                    handler.handle(sensorsSnapshotAvro);
+                    handler.handle(eventSimilarityAvro);
                 }
             }
         } catch (WakeupException ignored) {

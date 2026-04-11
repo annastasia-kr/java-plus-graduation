@@ -69,10 +69,9 @@ public class AggregatorProcessor {
                         for (EventSimilarityAvro eventSimilarity : eventSimilarityAvros) {
                             ProducerRecord<Long, SpecificRecordBase> producerRecord = buildProducerRecord(eventSimilarity);
                             producer.send(producerRecord);
-                            manageOffsets(record, count, consumer);
+                            manageOffsets(record, count++, consumer);
                             log.info("Similarity between events ID {} and {} has been sent to topic {}",
                                     eventSimilarity.getEventA(), eventSimilarity.getEventB(), producerRecord.topic());
-                            count++;
                         }
                     } catch (Exception e) {
                         log.error("Error processing record", e);
@@ -123,8 +122,8 @@ public class AggregatorProcessor {
         return new ProducerRecord<>(
                 this.eventSimilarityTopic,
                 null,
-                eventSimilarityAvro.getTimestamp().getEpochSecond(),
-                null,
+                eventSimilarityAvro.getTimestamp().toEpochMilli(),
+                eventSimilarityAvro.getEventA(),
                 eventSimilarityAvro
         );
     }
