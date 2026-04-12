@@ -1,7 +1,10 @@
 package ru.practicum.client;
 
+import io.grpc.StatusRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import ru.practicum.ewm.stats.proto.*;
 
@@ -16,6 +19,11 @@ public class RecommendationsGrpcClient {
     @GrpcClient("analyzer")
     private RecommendationsControllerGrpc.RecommendationsControllerBlockingStub blockingStub;
 
+    @Retryable(
+            retryFor = {StatusRuntimeException.class},
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 3000)
+    )
     public List<RecommendedEventProto> getRecommendationsForUser(long userId, int maxResults) {
         UserPredictionsRequestProto request = UserPredictionsRequestProto.newBuilder()
                 .setUserId(userId)
@@ -34,6 +42,11 @@ public class RecommendationsGrpcClient {
         return List.of();
     }
 
+    @Retryable(
+            retryFor = {StatusRuntimeException.class},
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 3000)
+    )
     private List<RecommendedEventProto> collectStream(Iterator<RecommendedEventProto> iterator) {
         List<RecommendedEventProto> result = new ArrayList<>();
         while (iterator.hasNext()) {

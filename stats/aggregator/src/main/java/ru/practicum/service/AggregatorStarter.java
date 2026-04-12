@@ -42,6 +42,7 @@ public class AggregatorStarter {
     }
 
     public void start() {
+        log.info("Start aggregator");
         try {
             // ... подписка на топик ...
             consumer.subscribe(List.of(this.userActionTopic));
@@ -65,6 +66,9 @@ public class AggregatorStarter {
                 // ... реализация цикла опроса ...
                 for (ConsumerRecord<Long, UserActionAvro> record : records) {
                     try {
+                        log.info("Get message: topic = {}, partition = {}, offset = {}, value = {}",
+                                record.topic(), record.partition(), record.offset(), record.value());
+
                         List<EventSimilarityAvro> eventSimilarityAvros = eventSimilarityService.updateSimilarity(record.value());
                         for (EventSimilarityAvro eventSimilarity : eventSimilarityAvros) {
                             ProducerRecord<Long, SpecificRecordBase> producerRecord = buildProducerRecord(eventSimilarity);

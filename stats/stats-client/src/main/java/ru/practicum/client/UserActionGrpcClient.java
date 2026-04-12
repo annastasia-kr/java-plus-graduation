@@ -1,8 +1,11 @@
 package ru.practicum.client;
 
 import com.google.protobuf.Timestamp;
+import io.grpc.StatusRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import ru.practicum.ewm.stats.proto.ActionTypeProto;
 import ru.practicum.ewm.stats.proto.UserActionControllerGrpc;
@@ -17,6 +20,11 @@ public class UserActionGrpcClient {
     @GrpcClient("collector")
     private UserActionControllerGrpc.UserActionControllerBlockingStub blockingStub;
 
+    @Retryable(
+            retryFor = {StatusRuntimeException.class},
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 3000)
+    )
     public void collectUserAction(long userId,
                                   long eventId,
                                   ActionTypeProto actionType) {
