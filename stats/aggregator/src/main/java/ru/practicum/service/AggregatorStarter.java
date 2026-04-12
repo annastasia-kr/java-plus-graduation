@@ -22,7 +22,7 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class AggregatorProcessor {
+public class AggregatorStarter {
 
     private static final Duration TIMEOUT = Duration.ofMillis(100);
 
@@ -33,7 +33,7 @@ public class AggregatorProcessor {
     private final EventSimilarityService eventSimilarityService;
     private final Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
 
-    public AggregatorProcessor(KafkaConfig config, EventSimilarityService eventSimilarityService) {
+    public AggregatorStarter(KafkaConfig config, EventSimilarityService eventSimilarityService) {
         this.producer = new KafkaProducer<>(config.getProducerProperties());
         this.consumer = new KafkaConsumer<>(config.getConsumerProperties());
         this.userActionTopic = config.getTopics().get(KafkaConfig.KafkaTopic.USER_ACTIONS);

@@ -6,11 +6,12 @@ aggregator:
   kafka:
     producer-properties:
       bootstrap.servers: localhost:9092
+      client.id: "aggregator-client"
       key.serializer: org.apache.kafka.common.serialization.LongSerializer
-      value.serializer: ru.practicum.kafka.serializer.GeneralAvroSerializer
+      value.serializer: ru.practicum.kafka.serializer.AvroSerializer
     consumer-properties:
       bootstrap.servers: localhost:9092
-      group.id: aggregator-group-id
+      group.id: "aggregator-group"
       key.deserializer: org.apache.kafka.common.serialization.LongDeserializer
       value.deserializer: ru.practicum.kafka.serializer.UserActionDeserializer
     topics:
@@ -19,7 +20,3 @@ aggregator:
 
 server:
   port: 0
-
-grpc:
-  server:
-    port: 0

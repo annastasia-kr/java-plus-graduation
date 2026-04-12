@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.ConfigurableApplicationContext;
-import ru.practicum.service.AggregatorProcessor;
+import ru.practicum.service.AggregatorStarter;
 
 
 @SpringBootApplication
@@ -15,7 +15,7 @@ public class AggregatorApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(AggregatorApplication.class, args);
 
-        AggregatorProcessor aggregator = context.getBean(AggregatorProcessor.class);
+        AggregatorStarter aggregator = context.getBean(AggregatorStarter.class);
         aggregator.start();
 
     }
