@@ -5,8 +5,6 @@
 @namespace("ru.practicum.ewm.stats.avro")
 protocol EventSimilarityProtocol {
 
-	import idl "Event.avdl";
-
 	/**
      * Рассчитанные значения сходства
      *
