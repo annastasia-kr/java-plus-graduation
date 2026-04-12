@@ -425,7 +425,6 @@ public class EventServiceImpl implements EventService {
         // Получаем рекомендации и сразу формируем карту ID → score
         Map<Long, Double> eventScores = recommendationsGrpcClient
                 .getRecommendationsForUser(userId, MAX_RESULT)
-                .stream()
                 .collect(Collectors.toMap(
                         RecommendedEventProto::getEventId,
                         RecommendedEventProto::getScore,

@@ -5,15 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.practicum.ewm.stats.proto.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Slf4j
-@Component
+@Service
 public class RecommendationsGrpcClient {
 
     @GrpcClient("analyzer")
@@ -24,7 +24,7 @@ public class RecommendationsGrpcClient {
             maxAttempts = 3,
             backoff = @Backoff(delay = 3000)
     )
-    public List<RecommendedEventProto> getRecommendationsForUser(long userId, int maxResults) {
+    public Stream<RecommendedEventProto> getRecommendationsForUser(long userId, int maxResults) {
         UserPredictionsRequestProto request = UserPredictionsRequestProto.newBuilder()
                 .setUserId(userId)
                 .setMaxResult(maxResults)
@@ -39,19 +39,14 @@ public class RecommendationsGrpcClient {
             log.error("getRecommendationsForUser failed : {}", e.getMessage());
         }
 
-        return List.of();
+        return Stream.empty();
     }
 
-    @Retryable(
-            retryFor = {StatusRuntimeException.class},
-            maxAttempts = 3,
-            backoff = @Backoff(delay = 3000)
-    )
-    private List<RecommendedEventProto> collectStream(Iterator<RecommendedEventProto> iterator) {
-        List<RecommendedEventProto> result = new ArrayList<>();
-        while (iterator.hasNext()) {
-            result.add(iterator.next());
-        }
-        return result;
+    private Stream<RecommendedEventProto> collectStream(Iterator<RecommendedEventProto> iterator) {
+        return StreamSupport.stream(
+                Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED),
+                false
+        );
     }
+
 }

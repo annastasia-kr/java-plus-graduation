@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.practicum.ewm.stats.proto.ActionTypeProto;
 import ru.practicum.ewm.stats.proto.UserActionControllerGrpc;
 import ru.practicum.ewm.stats.proto.UserActionProto;
@@ -14,7 +14,7 @@ import ru.practicum.ewm.stats.proto.UserActionProto;
 import java.time.Instant;
 
 @Slf4j
-@Component
+@Service
 public class UserActionGrpcClient {
 
     @GrpcClient("collector")

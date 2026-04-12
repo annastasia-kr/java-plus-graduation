@@ -25,7 +25,6 @@ public class EventSimilarityService {
     private final Map<Long, Map<Long, Double>> userEventWeights = new HashMap<>();
     private final Map<Long, Double> eventTotalWeights = new HashMap<>();
     private final Map<Long, Map<Long, Double>> minWeightSums = new HashMap<>();
-    private final Map<Long, ConcurrentSkipListSet<Long>> userInteractionHistory = new HashMap<>();
 
     public List<EventSimilarityAvro> updateSimilarity(UserActionAvro userActionAvro) {
         long eventId = userActionAvro.getEventId();
@@ -35,48 +34,36 @@ public class EventSimilarityService {
         Map<Long, Double> userWeightsForEvent = userEventWeights.computeIfAbsent(
                 eventId, k -> new HashMap<>()
         );
+        double oldWeight = userWeightsForEvent.getOrDefault(userId, 0.0);
 
-        Double oldWeight = userWeightsForEvent.compute(userId, (key, current) -> {
-            if (current == null) return newWeight;
-            return Math.max(current, newWeight);
-        });
-
-        if (oldWeight != null && newWeight <= oldWeight) {
+        if (newWeight <= oldWeight) {
             return Collections.emptyList();
         }
 
-        updateEventTotalWeight(eventId, oldWeight != null ? oldWeight : 0.0, newWeight);
+        userWeightsForEvent.merge(userId, newWeight, Math::max);
 
-        ConcurrentSkipListSet<Long> userEvents = userInteractionHistory.computeIfAbsent(
-                userId, k -> new ConcurrentSkipListSet<>()
-        );
+        double oldSum = eventTotalWeights.getOrDefault(eventId, 0.0);
+        double newSum = oldSum - oldWeight + newWeight;
+        eventTotalWeights.put(eventId, newSum);
 
         List<EventSimilarityAvro> updatedSimilarities = new ArrayList<>();
-        Set<Long> eventsCopy = new HashSet<>(userEvents);
 
-        for (long otherEventId : eventsCopy) {
-            if (otherEventId == eventId) continue;
+        for (long otherEventId : userEventWeights.keySet()) {
+            if (otherEventId == eventId || !userEventWeights.get(otherEventId).containsKey(userId) ||
+                    userEventWeights.get(otherEventId) == null) continue;
 
             double updatedSimilarity = recalculateSimilarityForPair(
-                    eventId, otherEventId, userId,
-                    oldWeight != null ? oldWeight : 0.0, newWeight
-            );
+                    eventId, otherEventId, userId, oldWeight, newWeight);
             updatedSimilarities.add(
                     new EventSimilarityAvro(
                             Math.min(eventId, otherEventId),
                             Math.max(eventId, otherEventId),
                             updatedSimilarity,
-                            Instant.now()
+                            userActionAvro.getTimestamp()
                     )
             );
         }
-
-        userEvents.add(eventId);
         return updatedSimilarities;
-    }
-
-    private void updateEventTotalWeight(long eventId, double oldWeight, double newWeight) {
-        eventTotalWeights.merge(eventId, newWeight - oldWeight, Double::sum);
     }
 
     private double recalculateSimilarityForPair(long eventA, long eventB, long userId, double oldWeight, double newWeight) {
