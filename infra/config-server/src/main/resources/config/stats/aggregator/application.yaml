@@ -8,7 +8,7 @@ aggregator:
       bootstrap.servers: localhost:9092
       client.id: "aggregator-client"
       key.serializer: org.apache.kafka.common.serialization.LongSerializer
-      value.serializer: ru.practicum.kafka.serializer.AvroSerializer
+      value.serializer: ru.practicum.kafka.serializer.GeneralAvroSerializer
     consumer-properties:
       bootstrap.servers: localhost:9092
       group.id: "aggregator-group"
