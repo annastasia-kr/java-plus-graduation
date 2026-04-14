@@ -226,6 +226,11 @@ public class RequestServiceImpl implements RequestService {
         return requestRepository.countByEventIdsAndStatusMap(eventIds, requestStatus);
     }
 
+    @Override
+    public boolean isParticipant(Long userId, Long eventId) {
+        return requestRepository.isParticipant(userId, eventId);
+    }
+
     private void validateRequestCreation(Long userId, EventDto event) {
         if (requestRepository.existsByEventIdAndRequesterId(event.getId(), userId)) {
             throw new ConflictException("Запрос на участие уже существует");

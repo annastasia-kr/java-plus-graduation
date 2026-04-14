@@ -38,4 +38,9 @@ public class InternalRequestController {
         return requestService.countByEventIdsAndStatusMap(eventIds, requestStatus);
     }
 
+    @GetMapping("{eventId}/participant/{userId}")
+    public boolean isParticipant(@PathVariable Long userId, @PathVariable Long eventId) {
+        return requestService.isParticipant(userId, eventId);
+    }
+
 }

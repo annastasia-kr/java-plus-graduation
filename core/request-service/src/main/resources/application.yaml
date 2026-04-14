@@ -38,3 +38,6 @@ logging:
     org.hibernate.type.descriptor.sql: TRACE
     feign: DEBUG
     com.netflix.discovery: DEBUG
+
+server:
+  port: 0

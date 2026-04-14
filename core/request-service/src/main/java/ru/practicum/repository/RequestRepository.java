@@ -10,7 +10,6 @@ import ru.practicum.request.enums.RequestStatus;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 public interface RequestRepository extends JpaRepository<Request, Long> {
 
     List<Request> findAllByEventId(Long eventId);
@@ -42,4 +41,11 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
                 .stream()
                 .collect(Collectors.toMap(eventResult -> eventResult.getEventId(), eventResult -> eventResult.getCount()));
     }
+
+    @Query("SELECT COUNT(r) > 0 " +
+            "FROM Request r " +
+            "WHERE r.requesterId = :requesterId " +
+            "AND r.eventId = :eventId " +
+            "AND r.status = ru.practicum.request.enums.RequestStatus.CONFIRMED")
+    boolean isParticipant(Long requesterId, Long eventId);
 }

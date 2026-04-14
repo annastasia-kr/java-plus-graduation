@@ -18,8 +18,7 @@ spring:
     username: postgres
     password: 12345
 
-server:
-  port: 0
+
 logging:
   level:
     org.springframework.orm.jpa: INFO
@@ -29,3 +28,6 @@ logging:
     org.hibernate.sql: DEBUG
     org.hibernate.type: TRACE
     org.hibernate.orm.jdbc.bind: TRACE
+
+server:
+  port: 0

@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS events (
     request_moderation  BOOLEAN,
     location_id         BIGINT,
     state               VARCHAR(32) NOT NULL,
+    rating              DOUBLE PRECISION,
     FOREIGN KEY (category_id)  REFERENCES categories(id),
     FOREIGN KEY (location_id)  REFERENCES locations(id)
 );

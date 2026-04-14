@@ -4,8 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.event.dto.EventDto;
+import ru.practicum.event.dto.EventShortDto;
 import ru.practicum.event.enums.Sort;
 import ru.practicum.service.event.EventService;
 
@@ -15,8 +17,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 @RequestMapping(path = "/events")
 public class PublicEventController {
+
+    public static final String X_EWM_USER_ID = "X-EWM-USER-ID";
 
     private final EventService eventService;
 
@@ -38,8 +43,22 @@ public class PublicEventController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EventDto getEvent(@PathVariable Long id,
+                             @RequestHeader(value = X_EWM_USER_ID, required = false) Long userId,
                              HttpServletRequest httpServletRequest) {
-        return eventService.getEvent(id, httpServletRequest);
+        return eventService.getEvent(id, userId, httpServletRequest);
+    }
+
+    @GetMapping("/recommendations")
+    @ResponseStatus(HttpStatus.OK)
+    public List<EventShortDto> getRecommendations(@RequestHeader(value = X_EWM_USER_ID) Long userId) {
+        return eventService.getRecommendations(userId);
+    }
+
+    @PutMapping("/{eventId}/like")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void likeEvent(@PathVariable Long eventId,
+                          @RequestHeader(value = X_EWM_USER_ID) Long userId) {
+        eventService.likeEvent(userId, eventId);
     }
 
 }

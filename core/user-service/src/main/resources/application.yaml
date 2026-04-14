@@ -20,3 +20,6 @@ eureka:
   instance:
     preferIpAddress: true
     instance-id: "${spring.application.name}:${random.value}"
+
+server:
+  port: 0

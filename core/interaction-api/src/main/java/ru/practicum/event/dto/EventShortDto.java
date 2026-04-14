@@ -32,5 +32,6 @@ public class EventShortDto {
 
     private Long participantLimit;
 
-    private Long views;
+    private Double rating;
+
 }
