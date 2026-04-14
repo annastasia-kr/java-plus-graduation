@@ -91,21 +91,23 @@ public class AggregatorStarter {
             shutdown();
         }
     }
-    private void shutdown() {
 
+    private void shutdown() {
         try {
             producer.flush();
             log.info("Producer buffer flushed successfully");
-
-            if (!consumer.assignment().isEmpty()) {
-                consumer.commitSync();
-                log.info("Offsets committed successfully");
-            }
-
         } catch (Exception e) {
-            log.error("Error during shutdown: {}", e.getMessage(), e);
-        } finally {
+            log.error("Error flushing producer: {}", e.getMessage(), e);
+        }
 
+        try {
+            consumer.commitSync();
+            log.info("Offsets committed successfully");
+        } catch (Exception e) {
+            log.error("Error during offset commit: {}", e.getMessage(), e);
+        }
+
+        finally {
             try {
                 producer.close();
                 log.info("Producer closed successfully");

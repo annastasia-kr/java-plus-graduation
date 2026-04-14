@@ -21,6 +21,8 @@ import java.util.List;
 @RequestMapping(path = "/events")
 public class PublicEventController {
 
+    public static final String X_EWM_USER_ID = "X-EWM-USER-ID";
+
     private final EventService eventService;
 
     @GetMapping
@@ -41,21 +43,21 @@ public class PublicEventController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EventDto getEvent(@PathVariable Long id,
-                             @RequestHeader(value = "X-EWM-USER-ID", required = false) Long userId,
+                             @RequestHeader(value = X_EWM_USER_ID, required = false) Long userId,
                              HttpServletRequest httpServletRequest) {
         return eventService.getEvent(id, userId, httpServletRequest);
     }
 
     @GetMapping("/recommendations")
     @ResponseStatus(HttpStatus.OK)
-    public List<EventShortDto> getRecommendations(@RequestHeader(value = "X-EWM-USER-ID") Long userId) {
+    public List<EventShortDto> getRecommendations(@RequestHeader(value = X_EWM_USER_ID) Long userId) {
         return eventService.getRecommendations(userId);
     }
 
     @PutMapping("/{eventId}/like")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void likeEvent(@PathVariable Long eventId,
-                          @RequestHeader(value = "X-EWM-USER-ID") Long userId) {
+                          @RequestHeader(value = X_EWM_USER_ID) Long userId) {
         eventService.likeEvent(userId, eventId);
     }
 
